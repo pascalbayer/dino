@@ -53,8 +53,14 @@ new Forum({
 ### Querying
 
 ```js
+
+var thread = new Thread({
+    forum_name: 'Amazon DynamoDB',
+    subject: 'DynamoDB Thread 1'
+});
+
 Reply.find({
-    hash: ['Amazon DynamoDB', 'DynamoDB Thread 1'],
+    hash: [thread.get('forum_name'), thread.get('subject')],
     skip: 0,
     take: 10
 }, function(err, replies){
