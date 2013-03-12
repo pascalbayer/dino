@@ -45,9 +45,14 @@ var Forum = dino.model('Forum', new dino.Schema({
         range: date_created
     })),
 
-var forum = new Forum({
-    forum_name: 'Amazon DynamoDB'
+new Forum({
+    name: 'Amazon DynamoDB'
+}).save();
+
+Reply.find({
+    hash: ['Amazon DynamoDB', 'DynamoDB Thread 1']
+}, function(err, replies){
+    console.log(replies);
 });
 
-forum.save();
 ```
