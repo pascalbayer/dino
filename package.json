@@ -1,0 +1,13 @@
+{
+  "name": "dino",
+  "version": "0.0.1",
+  "scripts": {
+    
+  },
+  "dependencies": {
+    "node-uuid": "~1.4.0",
+    "moment": "~1.7.2",
+    "underscore": "~1.4.3",
+    "aws-sdk": "~0.9.6-pre.7"
+  }
+}
