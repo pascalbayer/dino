@@ -55,3 +55,32 @@ Reply.find({
     console.log(replies);
 });
 ```
+
+### Key Smushing
+
+DynamoDB's [Query API](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/API_Query.html) can feel
+rather limited because you can only query by hash and range attributes. To allow for slightly more complex queries, you
+can combine multiple attributes into a single key.
+
+Pass a string array to the `key` config and Dino will combine or parse the attributes automatically:
+
+```js
+var table = 'threads',
+    attributes = {
+        forum_name: String,
+        subject: Number
+    },
+    key = {
+        hash: ['forum_name', 'subject'] // smush together
+    },
+    Thread = dino.Model.extend({
+        schema: new dino.Schema(table, attributes, key)
+    });
+
+new Thread({
+    forum_name: 'Amazon DynamoDB',
+    subject: 'DynamoDB Thread 1'
+}).save();
+
+// "forum_name#subject": "Amazon DynamoDB#DynamoDB Thread 1"
+```
