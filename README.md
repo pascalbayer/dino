@@ -62,7 +62,7 @@ DynamoDB's [Query API](http://docs.aws.amazon.com/amazondynamodb/latest/develope
 rather limited because you can only query by hash and range attributes. To allow for slightly more complex queries, you
 can combine multiple attributes into a single key.
 
-Pass a string array to the `key` config and Dino will combine or parse the attributes automatically:
+Pass a string array to the `hash` or `range` key configs and Dino will combine or parse the attributes automatically:
 
 ```js
 var table = 'threads',
