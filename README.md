@@ -1,6 +1,6 @@
 # Dino
 
-A simple ORM for DynamoDB.
+A simple DynamoDB object modeler for node.js.
 
 ## Installation
 
@@ -10,7 +10,7 @@ npm install dino
 
 ## Usage
 
-Simple example using [Amazon's sample data](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SampleTablesAndData.html):
+Example using [Amazon's sample data](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SampleTablesAndData.html):
 
 ```js
 var dino = require('dino');
