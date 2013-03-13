@@ -29,7 +29,6 @@ var table = 'forums',
     key = {
         hash: 'name'
     },
-    schema = new dino.Schema(),
     Forum = dino.Model.extend({
         schema: new dino.Schema(table, attributes, key)
     });
