@@ -21,14 +21,18 @@ dino.connect({
     region: 'us-east-1'
 });
 
-var Forum = dino.Model.extend({
-    schema: new dino.Schema('forums', {
+var table = 'forums',
+    attributes = {
         name: String,
         threads: Number
-    }, {
+    },
+    key = {
         hash: 'name'
-    })
-});
+    },
+    schema = new dino.Schema(),
+    Forum = dino.Model.extend({
+        schema: new dino.Schema(table, attributes, key)
+    });
 
 new Forum({
     name: 'Amazon DynamoDB'
