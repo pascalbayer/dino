@@ -10,7 +10,7 @@ npm install dino
 
 ## Usage
 
-Using Amazon's [forum example](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SampleTablesAndData.html):
+Simple example using [Amazon's sample data](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SampleTablesAndData.html):
 
 ```js
 var dino = require('dino');
@@ -21,29 +21,14 @@ dino.connect({
     region: 'us-east-1'
 });
 
-var Forum = dino.model('Forum', new dino.Schema({
+var Forum = dino.Model.extend({
+    schema: new dino.Schema('forums', {
         name: String,
         threads: Number
     }, {
         hash: 'name'
-    })),
-    Thread = dino.model('Thread', new dino.Schema({
-        forum_name: String,
-        subject: String,
-        message: String
-    }, {
-        hash: 'forum_name',
-        range: 'subject'
-    })),
-    Reply = dino.model('Reply', new dino.Schema({
-        forum_name: String,
-        thread_name: String,
-        message: String,
-        date_created: Date
-    }, {
-        hash: ['forum_name', 'thread_name'],
-        range: date_created
-    })),
+    })
+});
 
 new Forum({
     name: 'Amazon DynamoDB'
@@ -66,5 +51,4 @@ Reply.find({
 }, function(err, replies){
     console.log(replies);
 });
-
 ```
