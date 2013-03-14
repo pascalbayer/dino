@@ -5,7 +5,7 @@ A simple DynamoDB object modeler for node.js.
 ## Installation
 
 ```
-npm install dino
+$ npm install dino
 ```
 
 ## Usage
@@ -83,4 +83,13 @@ new Thread({
 }).save();
 
 // "forum_name#subject": "Amazon DynamoDB#DynamoDB Thread 1"
+```
+
+## Tests
+
+Install the dependencies and run.
+
+```
+$ npm install
+$ npm test
 ```
