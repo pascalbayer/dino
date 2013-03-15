@@ -72,4 +72,27 @@ describe('dino', function(){
             });
         });
     });
+    
+    describe('schema', function(){
+        var forumSchema, threadSchema;
+        beforeEach(function(){
+            forumSchema = new dino.Schema('forums', {
+                name: String
+            }, {
+                hash: 'name'
+            });
+            threadSchema = new dino.Schema('threads', {
+                forum_name: String,
+                subject: String
+            }, {
+                hash: ['forum_name', 'subject']
+            });
+        });
+        describe('instance methods', function(){
+            it('generates the hash attribute', function(){
+                forumSchema.generateHashAttribute('a').should.eql({S:'a'});
+                threadSchema.generateHashAttribute(['a', 'b']).should.eql({S:'a#b'});
+            });
+        });
+    });
 });
