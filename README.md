@@ -1,6 +1,8 @@
 # Dino
 
-A simple DynamoDB object modeler for node.js.
+A simple DynamoDB object modeler for Node.js.
+
+[![Build Status](https://secure.travis-ci.org/christophercliff/dino.png?branch=master)](https://travis-ci.org/christophercliff/dino)
 
 ## Installation
 
@@ -12,7 +14,7 @@ $ npm install dino
 
 Cross-ref with [Amazon's sample data](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SampleTablesAndData.html):
 
-### Connect
+### connect
 
 Creates a DynamoDB client using your credentials. Alternatively, you can omit this and [use environment variables](http://docs.aws.amazon.com/nodejs/latest/dg/configuration-guide.html#nodejs-dg-credentials-from-environment-variables) instead.
 
@@ -126,7 +128,7 @@ Reply.findOne({
 
 #### toJSON
 
-Returns a JSON-like representation of an model's properties.
+Returns a JSON-like representation of the model's properties.
 
 ```js
 forum.toJSON();
