@@ -33,17 +33,38 @@ Sets the table, property types and primary keys.
 ```js
 var table = 'forums',
     attributes = {
-        name: String,
-        category: String,
-        thread_count: Number,
-        view_count: Number,
-        last_post_author: String,
-        last_post_date: Date
+        name: dino.types.String,
+        category: dino.types.String,
+        thread_count: dino.types.Number,
+        view_count: dino.types.Number,
+        last_post_author: dino.types.String,
+        last_post_date: dino.types.Date
     },
     key = {
         hash: 'name'
     },
     schema = new dino.Schema(table, attributes, key);
+```
+
+#### Types
+
+Dino ships with several schema types:
+
+- `dino.types.Boolean`
+- `dino.types.Date`
+- `dino.types.Id`
+- `dino.types.Number`
+- `dino.types.Object`
+- `dino.types.String`
+
+To create a custom type, extend `dino.Type`:
+
+```js
+var MyType = dino.Type.extend({
+    defaultValue: function () {},
+    parseValue: function (val) {},
+    transformValue: function (val) {}
+});
 ```
 
 ### Model
