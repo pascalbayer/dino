@@ -1,6 +1,6 @@
 {
   "name": "dino",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "Christopher Cliff <ctcliff@gmail.com>",
   "description": "A simple DynamoDB object modeler for Node.js.",
   "license": "MIT",
@@ -18,7 +18,7 @@
     "should": "~1.2.1"
   },
   "repository": {
-      "type": "git",
-      "url": "http://github.com/christophercliff/dino"
-    }
+    "type": "git",
+    "url": "http://github.com/christophercliff/dino"
+  }
 }
