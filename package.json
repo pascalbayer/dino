@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "author": "Christopher Cliff <ctcliff@gmail.com>",
   "description": "A simple DynamoDB object modeler for Node.js.",
+  "keywords": ["dino", "dynamodb", "aws", "nosql", "orm", "odm", "modeler"],
   "license": "MIT",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha"
@@ -20,5 +21,8 @@
   "repository": {
     "type": "git",
     "url": "http://github.com/christophercliff/dino"
+  },
+  "bugs": {
+    "url": "https://github.com/christophercliff/dino/issues"
   }
 }
