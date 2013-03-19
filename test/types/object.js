@@ -11,7 +11,7 @@ describe('dino', function(){
             it('parses the value', function(){
                 should.not.exist(type.parseValue());
                 should.not.exist(type.parseValue(null));
-                should.not.exist(type.parseValue(1));
+                type.parseValue(1).should.equal(1);
                 should.not.exist(type.parseValue('a'));
             });
         });
