@@ -19,26 +19,26 @@ describe('dino', function(){
                 type.parseValue(0).should.equal(false);
                 type.parseValue(-1).should.equal(false);
                 type.parseValue(false).should.equal(false);
-                type.parseValue(1).should.equal(true);
+                type.parseValue('1').should.equal(true);
             });
         });
         describe('parse', function(){
             it('parses', function(){
-                type.parse({ N: 0 }).should.equal(false);
-                type.parse({ N: 1 }).should.equal(true);
-                type.parse({ NN: [1, 0] }).should.eql([true, false]);
+                type.parse({ N: '0' }).should.equal(false);
+                type.parse({ N: '1' }).should.equal(true);
+                type.parse({ NN: ['1', '0'] }).should.eql([true, false]);
             });
         });
         describe('transformValue', function(){
             it('transforms the value', function(){
-                type.transformValue(true).should.equal(1);
-                type.transformValue(false).should.equal(0);
+                type.transformValue(true).should.equal('1');
+                type.transformValue(false).should.equal('0');
             });
         });
         describe('transform', function(){
             it('transforms the value', function(){
-                type.transform(true).should.eql({ N: 1 });
-                type.transform([true, false]).should.eql({ NN: [1, 0] });
+                type.transform(true).should.eql({ N: '1' });
+                type.transform([true, false]).should.eql({ NN: ['1', '0'] });
             });
         });
     })

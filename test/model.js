@@ -65,7 +65,7 @@ describe('dino', function(){
                     category: { S: attributes.category },
                     thread_count: { N: attributes.thread_count },
                     message_count: { N: attributes.message_count },
-                    is_new: { N: 1 },
+                    is_new: { N: '1' },
                     last_post_author: { S: attributes.last_post_author },
                     last_post_date: { S: moment(now).format() }
                 });
