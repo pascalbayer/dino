@@ -19,6 +19,22 @@ var User = dino.Model.extend({
 
 dino.connect(config);
 
-new User().save(function(err, data){
-    console.log(err, data);
+var user = new User({
+    name: 'Chris',
+    age: 29,
+    weight: 190.5,
+    is_active: true,
+    colors: ['red', 'green', 'blue'],
+    documents: [{ id: 1, name: 'A' }, { id: 2, name: 'B' }]
+});
+
+user.save(function(err){
+    if (err) return console.log(err);
+    console.log('Saved user: ' + user.get('name'));
+    User.findOne({
+        hash: user.get('id')
+    }, function(err, u){
+        if (err) return console.log(err);
+        console.log('Found user: ', u.get('name'));
+    });
 });
