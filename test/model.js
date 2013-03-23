@@ -68,5 +68,20 @@ describe('Model', function(){
                 last_post_date: { S: moment(now).format() }
             });
         });
+        it('sets the defaults', function(){
+            var f = new Forum({
+                last_post_date: now
+            });
+            f.toJSON().should.eql({
+                name: '',
+                category: '',
+                thread_count: null,
+                message_count: null,
+                is_new: false,
+                last_post_author: '',
+                last_post_date: moment(now)
+            });
+            console.log(111, f.toJSON());
+        });
     });
 });
