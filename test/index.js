@@ -1,9 +1,6 @@
-require('./type');
-require('./types/boolean');
-require('./types/date');
-require('./types/id');
-require('./types/number');
-require('./types/object');
-require('./types/string');
-require('./schema');
-require('./model');
+describe('dino', function(){
+    require('./type');
+    require('./types');
+    require('./schema');
+    require('./model');
+});
