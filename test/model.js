@@ -40,6 +40,18 @@ describe('Model', function(){
             Forum.schema.should.be.instanceOf(dino.Schema);
         });
     });
+    describe('toDynamo', function(){
+        it('omits null and empty values', function(){
+            var f = new Forum({
+                name: 'Test'
+            });
+            f.toDynamo().should.eql({
+                name: { S: 'Test' },
+                is_new: { N: '0' },
+                last_post_date: { S: moment(now).format() }
+            });
+        });
+    });
     describe('instance methods', function(){
         it('gets attributes', function(){
             forum.get('name').should.equal('Amazon DynamoDB');
