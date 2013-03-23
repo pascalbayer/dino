@@ -81,7 +81,6 @@ describe('Model', function(){
                 last_post_author: '',
                 last_post_date: moment(now)
             });
-            console.log(111, f.toJSON());
         });
     });
 });
