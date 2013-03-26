@@ -51,6 +51,26 @@ describe('Model', function(){
                 last_post_date: { S: moment(now).format() }
             });
         });
+        it('omits empty arrays', function(){
+            var Cafe = dino.Model.extend({
+                schema: new dino.Schema('cafes', {
+                        name: dino.types.String,
+                        drinks: dino.types.String,
+                        snacks: dino.types.String
+                    }, {
+                        hash: 'name'
+                    })
+                }),
+                c = new Cafe({
+                    name: 'Lost Weekend NYC',
+                    drinks: [],
+                    snacks: []
+                });
+            
+            c.toDynamo().should.eql({
+                'name': { S: 'Lost Weekend NYC' }
+            });
+        });
         it('combines hash keys', function(){
             var Reply = dino.Model.extend({
                 schema: new dino.Schema('replies', {
