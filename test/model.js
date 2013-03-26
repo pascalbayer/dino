@@ -51,6 +51,44 @@ describe('Model', function(){
                 last_post_date: { S: moment(now).format() }
             });
         });
+        it('combines hash keys', function(){
+            var Reply = dino.Model.extend({
+                schema: new dino.Schema('replies', {
+                        table_name: dino.types.String,
+                        thread_name: dino.types.String
+                    }, {
+                        hash: ['table_name', 'thread_name']
+                    })
+                }),
+                r = new Reply({
+                    table_name: 'what',
+                    thread_name: 'ever'
+                });
+            r.toDynamo().should.eql({
+                'table_name#thread_name': { S: 'what#ever' }
+            });
+        });
+        it('combines range keys', function(){
+            var Artifact = dino.Model.extend({
+                schema: new dino.Schema('artifacts', {
+                        user_id: dino.types.String,
+                        date_created: dino.types.Date,
+                        id: dino.types.Id
+                    }, {
+                        hash: 'user_id',
+                        range: ['date_created', 'id']
+                    })
+                }),
+                a = new Artifact({
+                    user_id: 'ctcliff',
+                    id: '12345',
+                    date_created: now
+                });
+            a.toDynamo().should.eql({
+                user_id: { S: 'ctcliff' },
+                'date_created#id': { S: moment(now).format() + '#12345' }
+            });
+        });
     });
     describe('instance methods', function(){
         it('gets attributes', function(){
