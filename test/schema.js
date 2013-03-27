@@ -63,6 +63,10 @@ describe('Schema', function(){
     });
     describe('deserializeHashAttribute', function(){
         it('deserializes the hash attribute', function(){
+            var obj = forumSchema.deserializeHashAttribute({ S: 'sometablename' });
+            obj.name.should.equal('sometablename');
+        });
+        it('deserializes combined hash attributes', function(){
             var obj = replySchema.deserializeHashAttribute({ S: 'what#ever' });
             obj.forum_name.should.equal('what');
             obj.subject.should.equal('ever');
