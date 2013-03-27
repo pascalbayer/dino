@@ -109,6 +109,26 @@ describe('Model', function(){
                 'date_created#id': { S: moment(now).format() + '#12345' }
             });
         });
+        it('parses combo keys', function(){
+            var Artifact = dino.Model.extend({
+                schema: new dino.Schema('artifacts', {
+                        user_id: dino.types.String,
+                        date_created: dino.types.Date,
+                        id: dino.types.Id
+                    }, {
+                        hash: 'user_id',
+                        range: ['date_created', 'id']
+                    })
+                }),
+                parsed = Artifact.parse({
+                    'user_id': { S: 'ctcliff' },
+                    'date_created#id': { S: '2013-03-27T19:21:54+00:00#12345' }
+                });
+            parsed.get('user_id').should.equal('ctcliff');
+            parsed.get('id').should.equal('12345');
+            moment.isMoment(parsed.get('date_created')).should.be.true;
+            parsed.get('date_created').format().should.equal('2013-03-27T19:21:54+00:00');
+        });
     });
     describe('instance methods', function(){
         it('gets attributes', function(){
