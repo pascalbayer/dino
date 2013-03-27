@@ -61,4 +61,19 @@ describe('Schema', function(){
             replySchema.generateRangeAttribute([m, id]).should.eql({ S: m.format() + '#' + id });
         });
     });
+    describe('deserializeHashAttribute', function(){
+        it('deserializes the hash attribute', function(){
+            var obj = replySchema.deserializeHashAttribute({ S: 'what#ever' });
+            obj.forum_name.should.equal('what');
+            obj.subject.should.equal('ever');
+        });
+    });
+    describe('deserializeRangeAttribute', function(){
+        it('deserializes the range attribute', function(){
+            var obj = replySchema.deserializeRangeAttribute({ S: '2013-03-27T19:21:54+00:00#12345' });
+            obj.id.should.equal('12345');
+            moment.isMoment(obj.date_created).should.be.true;
+            obj.date_created.format().should.equal('2013-03-27T19:21:54+00:00');
+        });
+    });
 });
