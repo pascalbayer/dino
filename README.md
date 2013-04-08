@@ -46,7 +46,7 @@ $ npm install dino
 
 - [connect()](#connectoptions)
 - [connection.client](#connectoptions)
-- [connection.create](#connectoptions)
+- [connection.create()](#connectoptions)
 - [schema()](#connectoptions)
 - [schema.createTable()](#connectoptions)
 - [type()](#connectoptions)
@@ -123,6 +123,7 @@ var forumSchema = dino.schema({
 - `table` (required)
 - `attributes` (required)
 - `key` (required)
+- `keyDelimiter`
 
 #### types
 
@@ -147,9 +148,9 @@ Creates a schema type.
 
 ```js
 var myCustomId = dino.type({
-    defaultValue: function () { return uuid.v4(); },
-    toDynamo: function (val) { return val; },
-    fromDynamo: function (val) { return val; },
+    defaultValue: null,
+    serialize: function (val) { return val; },
+    deserialize: function (val) { return val; },
     toJSON: function (val) { return val; }
 });
 ```
@@ -157,8 +158,8 @@ var myCustomId = dino.type({
 #### options
 
 - `defaultValue`
-- `toDynamo`
-- `fromDynamo`
+- `serialize`
+- `deserialize`
 - `toJSON`
 
 ### `model(options)`

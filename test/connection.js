@@ -27,6 +27,8 @@ describe('connection', function(){
         
         dino.connection.client.config.credentials.accessKeyId.should.equal('BBB');
         
+        dino.connect();
+        
     });
     
     it('should create client instances', function(){
