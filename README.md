@@ -44,6 +44,8 @@ $ npm install dino
 
 ## API
 
+- [connect()](#connectoptions)
+
 ### `connect(options)`
 
 Sets the default [DynamoDB client](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/Client.html). Alternatively, omit this and [use environment variables](http://docs.aws.amazon.com/nodejs/latest/dg/configuration-guide.html#nodejs-dg-credentials-from-environment-variables).
