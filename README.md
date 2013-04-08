@@ -147,7 +147,7 @@ forumSchema.createTable(function(err, units){  });
 Creates a schema type.
 
 ```js
-var myCustomId = dino.type({
+var myType = dino.type({
     defaultValue: null,
     serialize: function (val) { return val; },
     deserialize: function (val) { return val; },
@@ -190,7 +190,7 @@ var forum = forumModel.create({
 
 ### `model.set(attributes)`
 
-Sets the model's attributes.
+Sets the instance attributes.
 
 ```js
 forum.set({
@@ -200,7 +200,7 @@ forum.set({
 
 ### `model.get(attribute)`
 
-Gets the model's attributes.
+Gets the instance attributes.
 
 ```js
 forum.get('name'); // 'Amazon S3'
@@ -208,7 +208,7 @@ forum.get('name'); // 'Amazon S3'
 
 ### `model.save([callback])`
 
-Saves the model to DynamoDB.
+Saves the instance to DynamoDB.
 
 ```js
 forum.save(function(err, units){  });
@@ -216,7 +216,7 @@ forum.save(function(err, units){  });
 
 ### `model.destroy([callback])`
 
-Deletes the model from DynamoDB.
+Deletes the instance from DynamoDB.
 
 ```js
 forum.destroy(function(err, units){  });
@@ -224,7 +224,7 @@ forum.destroy(function(err, units){  });
 
 ### `model.toJSON()`
 
-Returns the JSON serialized attributes.
+Returns the JSON serialized attributes of the instance.
 
 ```js
 forum.toJSON();
@@ -265,7 +265,7 @@ replyModel.find({
 
 ### `collection.toJSON()`
 
-Returns the serialized attributes for every model in a collection.
+Returns an array of JSON serialized attributes for every model in a collection.
 
 ```js
 replies.toJSON();
