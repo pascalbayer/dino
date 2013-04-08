@@ -51,14 +51,14 @@ $ npm install dino
 - [schema.createTable()](#connectoptions)
 - [type()](#connectoptions)
 - [model()](#connectoptions)
-- [model.create()](#connectoptions)
+- [Model.create()](#connectoptions)
+- [Model.findOne()](#connectoptions)
+- [Model.find()](#connectoptions)
 - [model.set()](#connectoptions)
 - [model.get()](#connectoptions)
 - [model.save()](#connectoptions)
 - [model.destroy()](#connectoptions)
 - [model.toJSON()](#connectoptions)
-- [model.findOne()](#connectoptions)
-- [model.find()](#connectoptions)
 - [collection.toJSON()](#connectoptions)
 
 ### `connect(options)`
@@ -164,10 +164,10 @@ var myType = dino.type({
 
 ### `model(options)`
 
-Creates a model.
+Creates a Model definition. Use this object to create and query models.
 
 ```js
-var forumModel = dino.model({
+var Forum = dino.model({
     schema: forumSchema
 });
 ```
@@ -177,20 +177,53 @@ var forumModel = dino.model({
 - `schema` (required)
 - `client`
 
-### `model.create(attributes)`
+### `Model.create(attributes)`
 
 Creates an instance of a model.
 
 ```js
-var forum = forumModel.create({
+var forum = Forum.create({
     name: 'Amazon DynamoDB',
     category: 'Amazon Web Services'
 });
 ```
 
+### `Model.findOne(options[, callback])`
+
+Queries DynamoDB for a single model.
+
+```js
+Forum.findOne({
+    hash: 'Amazon DynamoDB'
+}, function(err, forum, units){  });
+```
+
+#### options
+
+- `hash` (required)
+- `range`
+
+### `Model.find(options[, callback])`
+
+Queries DynamoDB for a collection of models.
+
+```js
+Reply.find({
+    hash: ['Amazon DynamoDB', 'DynamoDB Thread 1'],
+    take: 10
+}, function(err, replies, units){  });
+```
+
+#### options
+
+- `hash` (required)
+- `range`
+- `skip`
+- `take`
+
 ### `model.set(attributes)`
 
-Sets the instance attributes.
+Sets the model attributes.
 
 ```js
 forum.set({
@@ -200,7 +233,7 @@ forum.set({
 
 ### `model.get(attribute)`
 
-Gets the instance attributes.
+Gets the model attributes.
 
 ```js
 forum.get('name'); // 'Amazon S3'
@@ -229,39 +262,6 @@ Returns the JSON serialized attributes of the instance.
 ```js
 forum.toJSON();
 ```
-
-### `model.findOne(options[, callback])`
-
-Queries DynamoDB for a single model.
-
-```js
-forumModel.findOne({
-    hash: 'Amazon DynamoDB'
-}, function(err, forum, units){  });
-```
-
-#### options
-
-- `hash` (required)
-- `range`
-
-### `model.find(options[, callback])`
-
-Queries DynamoDB for a collection of models.
-
-```js
-replyModel.find({
-    hash: ['Amazon DynamoDB', 'DynamoDB Thread 1'],
-    take: 10
-}, function(err, replies, units){  });
-```
-
-#### options
-
-- `hash` (required)
-- `range`
-- `skip`
-- `take`
 
 ### `collection.toJSON()`
 
