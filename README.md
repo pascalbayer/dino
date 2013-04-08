@@ -45,6 +45,21 @@ $ npm install dino
 ## API
 
 - [connect()](#connectoptions)
+- [connection.client](#connectoptions)
+- [connection.create](#connectoptions)
+- [schema()](#connectoptions)
+- [schema.createTable()](#connectoptions)
+- [type()](#connectoptions)
+- [model()](#connectoptions)
+- [model.create()](#connectoptions)
+- [model.set()](#connectoptions)
+- [model.get()](#connectoptions)
+- [model.save()](#connectoptions)
+- [model.destroy()](#connectoptions)
+- [model.toJSON()](#connectoptions)
+- [model.findOne()](#connectoptions)
+- [model.find()](#connectoptions)
+- [collection.toJSON()](#connectoptions)
 
 ### `connect(options)`
 
