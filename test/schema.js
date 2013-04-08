@@ -31,12 +31,11 @@ describe('schema', function(){
         
         var s = dino.schema({
             attributes: {
-                a: '',
-                b: ''
+                a: dino.types.boolean
             }
         });
         
-        
+        dino.types.boolean.isPrototypeOf(s.attributes.a).should.be.true;
         
     });
     
