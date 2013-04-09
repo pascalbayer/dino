@@ -3,4 +3,5 @@ describe('dino', function(){
     require('./types');
     require('./schema');
     require('./model');
+    require('./collection');
 });

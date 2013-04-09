@@ -39,7 +39,7 @@ user.save(function(err){
             
             if (err) return console.log(err);
             
-            console.log('Found posts: ', posts);
+            console.log('Found posts: ', posts.toJSON());
         });
         
     });
