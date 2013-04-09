@@ -60,6 +60,7 @@ $ npm install dino
 - [model.destroy()](#connectoptions)
 - [model.toJSON()](#connectoptions)
 - [collection.toJSON()](#connectoptions)
+- [collection.models](#connectoptions)
 
 ### `connect(options)`
 
@@ -265,10 +266,18 @@ forum.toJSON();
 
 ### `collection.toJSON()`
 
-Returns an array of JSON serialized attributes for every model in a collection.
+Returns an array of JSON serialized models.
 
 ```js
 replies.toJSON();
+```
+
+### `collection.models`
+
+The raw array of models in the collection.
+
+```js
+replies.models;
 ```
 
 ## Tests
