@@ -1,25 +1,12 @@
 var fs = require('fs'),
+    config = JSON.parse(fs.readFileSync('./aws-config.json')),
     dino = require('../../'),
-    config = JSON.parse(fs.readFileSync('./aws-config.json'));
-
-var User = dino.Model.extend({
-    schema: new dino.Schema('dino_example_users', {
-        id: dino.types.Id,
-        name: dino.types.String,
-        age: dino.types.Number,
-        weight: dino.types.Number,
-        date_created: dino.types.Date,
-        is_active: dino.types.Boolean,
-        colors: dino.types.String,
-        documents: dino.types.Object
-    }, {
-        hash: 'id'
-    })
-});
+    User = require('./models/user'),
+    Post = require('./models/post');
 
 dino.connect(config);
 
-var user = new User({
+var user = User.create({
     name: 'Chris',
     age: 29,
     weight: 190.5,
@@ -29,12 +16,40 @@ var user = new User({
 });
 
 user.save(function(err){
+    
     if (err) return console.log(err);
+    
     console.log('Saved user: ' + user.get('name'));
+    
+    var post = Post.create({
+        user_id: user.get('id'),
+        title: 'My First Post',
+        body: 'etc...'
+    });
+    
+    post.save(function(err){
+        
+        if (err) return console.log(err);
+        
+        console.log('Saved post: ' + post.get('title'));
+        
+        Post.find({
+            hash: user.get('id')
+        }, function(err, posts){
+            
+            if (err) return console.log(err);
+            
+            console.log('Found posts: ', posts);
+        });
+        
+    });
+    
     User.findOne({
         hash: user.get('id')
     }, function(err, u){
+        
         if (err) return console.log(err);
+        
         console.log('Found user: ', u.get('name'));
     });
 });

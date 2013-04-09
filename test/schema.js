@@ -1,83 +1,130 @@
 var should = require('should'),
-    dino = require('../lib/'),
-    moment = require('moment');
+    moment = require('moment'),
+    dino = require('../');
 
-describe('Schema', function(){
+describe('schema', function(){
     
-    var forumSchema,
+    var schema,
         replySchema;
     
     beforeEach(function(){
-        forumSchema = new dino.Schema('forums', {
-            name: dino.types.String,
-            misc: dino.types.Object
-        }, {
-            hash: 'name'
+        dino.connect();
+        schema = dino.schema({
+            table: 'forums',
+            attributes: {
+                name: dino.types.string,
+                misc: dino.types.object
+            },
+            key: {
+                hash: 'name'
+            }
         });
-        replySchema = new dino.Schema('replies', {
-            forum_name: dino.types.String,
-            subject: dino.types.String,
-            date_created: dino.types.Date,
-            id: dino.types.Id
-        }, {
-            hash: ['forum_name', 'subject'],
-            range: ['date_created', 'id']
+        replySchema = dino.schema({
+            table: 'replies',
+            attributes: {
+                forum_name: dino.types.string,
+                subject: dino.types.string,
+                date_created: dino.types.date,
+                id: dino.types.id
+            },
+            key: {
+                hash: ['forum_name', 'subject'],
+                range: ['date_created', 'id']
+            }
         });
     });
     
     describe('constructor', function(){
-        it('sets the initial properties', function(){
-            forumSchema.should.have.property('table', 'forums');
-            forumSchema.should.have.property('attributes');
-            forumSchema.should.have.property('hashKeyAttributes');
-            forumSchema.should.have.property('hashKey', 'name');
-            forumSchema.should.have.property('rangeKey', null);
-            forumSchema.constructor.keyDelimiter.should.equal('#');
+        
+        it('should set the defaults', function(){
+            schema.should.have.property('table', 'forums');
+            schema.should.have.property('attributes');
+            schema.should.have.property('hashKeyAttributes');
+            schema.hashKeyAttributes.should.eql(['name']);
+            schema.should.have.property('hashKey', 'name');
+            schema.should.have.property('rangeKey', null);
+            schema.should.have.property('keyDelimiter', '#');
         });
-    });
-    describe('get', function(){
-        it('gets the attributes', function(){
-            forumSchema.get('name').should.be.an.instanceof(dino.types.String);
-            forumSchema.get('misc').should.be.an.instanceof(dino.types.Object);
+        
+        it('should add the attributes', function(){
+            dino.types.string.isPrototypeOf(schema.attributes.name).should.be.true;
+            dino.types.object.isPrototypeOf(schema.attributes.misc).should.be.true;
         });
+        
     });
+    
+    describe('createTable', function(){
+        
+        it('should create a table', function(){
+            
+            
+            
+        });
+        
+    });
+    
     describe('add', function(){
-        it('adds the attributes', function(){
-            forumSchema.add('newAttr', dino.types.Boolean);
-            forumSchema.get('newAttr').should.be.an.instanceof(dino.types.Boolean);
+        
+        it('should add an attribute', function(){
+            
+            schema.add('newAttr', dino.types.boolean);
+            dino.types.boolean.isPrototypeOf(schema.get('newAttr')).should.be.true;
         });
+        
     });
-    describe('generateHashAttribute', function(){
-        it('generates the hash attribute', function(){
-            var s = 'a';
-            forumSchema.generateHashAttribute(s).should.eql({ S: s });
-            replySchema.generateHashAttribute(['a', 'b']).should.eql({ S: 'a#b' });
+    
+    describe('get', function(){
+        
+        it('should get an attribute', function(){
+            dino.types.string.isPrototypeOf(schema.get('name')).should.be.true;
+            dino.types.object.isPrototypeOf(schema.get('misc')).should.be.true;
         });
+        
     });
-    describe('generateRangeAttribute', function(){
-        it('generates the range attribute', function(){
+    
+    describe('serializeHashAttribute', function(){
+        
+        it('should serialize the hash attribute', function(){
+            schema.serializeHashAttribute('a').should.eql({ S: 'a' });
+            replySchema.serializeHashAttribute(['a', 'b']).should.eql({ S: 'a#b' });
+        });
+        
+    });
+    
+    describe('serializeRangeAttribute', function(){
+        
+        it('should serialize the range attribute', function(){
             var m = moment.utc(),
                 id = '12345';
-            replySchema.generateRangeAttribute([m, id]).should.eql({ S: m.format() + '#' + id });
+            replySchema.serializeRangeAttribute([m, id]).should.eql({ S: m.format() + '#' + id });
         });
+        
     });
+    
     describe('deserializeHashAttribute', function(){
-        it('deserializes the hash attribute', function(){
-            var obj = forumSchema.deserializeHashAttribute({ S: 'sometablename' });
+        
+        it('should deserialize the hash attribute', function(){
+            var obj = schema.deserializeHashAttribute({ S: 'sometablename' });
             obj.name.should.equal('sometablename');
         });
-        it('deserializes combined hash attributes', function(){
+        
+        it('should deserialize combined hash attributes', function(){
             var obj = replySchema.deserializeHashAttribute({ S: 'what#ever' });
             obj.forum_name.should.equal('what');
             obj.subject.should.equal('ever');
         });
+        
     });
+    
     describe('deserializeRangeAttribute', function(){
-        it('deserializes the range attribute', function(){
+        
+        it('should deserialize the range attribute', function(){
             var obj = replySchema.deserializeRangeAttribute({ S: '2013-03-27T19:21:54+00:00#12345' });
             obj.id.should.equal('12345');
             moment.isMoment(obj.date_created).should.be.true;
             obj.date_created.format().should.equal('2013-03-27T19:21:54+00:00');
         });
+        
     });
+    
 });

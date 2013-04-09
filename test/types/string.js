@@ -1,9 +1,11 @@
 var should = require('should'),
-    dino = require('../../lib/');
+    dino = require('../../');
 
-describe('String', function(){
+describe('string', function(){
+    
     var type;
+    
     beforeEach(function(){
-        type = new dino.types.String();
+        type = Object.create(dino.types.string);
     });
 });

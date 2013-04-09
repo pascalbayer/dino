@@ -1,52 +1,61 @@
 var should = require('should'),
-    dino = require('../lib/');
+    dino = require('../');
 
-describe('Type', function(){
+describe('type', function(){
+    
     var type;
+    
     beforeEach(function(){
-        type = new dino.Type();
+        type = dino.type();
     });
+    
     describe('parseValue', function(){
         it('returns the value', function(){
             var s = 'a';
-            type.parseValue(s).should.equal(s);
+            type.deserialize(s).should.equal(s);
         });
     });
+    
     describe('parse', function(){
         it('parses strings', function(){
             var s = 'a';
-            type.parse({ S: s }).should.equal(s);
+            type.deserializeObject({ S: s }).should.equal(s);
         });
         it('parses arrays', function(){
             var ss = ['a', 'b'];
-            type.parse({ SS: ss }).should.eql(ss);
+            type.deserializeObject({ SS: ss }).should.eql(ss);
         });
     });
+    
     describe('transformValue', function(){
         it('returns the value', function(){
             var s = 'a';
-            type.transformValue(s).should.equal(s);
+            type.serialize(s).should.equal(s);
         });
     });
+    
     describe('transform', function(){
         it('transforms strings', function(){
             var s = 'a';
-            type.transform(s).should.eql({ S: s });
+            type.serializeObject(s).should.eql({ S: s });
         });
         it('transforms arrays', function(){
             var ss = ['a', 'b'];
-            type.transform(ss).should.eql({ SS: ss });
+            type.serializeObject(ss).should.eql({ SS: ss });
         });
     });
+    
     describe('toJSON', function(){
         it('returns the value', function(){
             var s = 'a';
             type.toJSON(s).should.equal(s);
         });
     });
+    
     describe('getDefaultValue', function(){
         it('returns null', function(){
             should.not.exist(type.getDefaultValue());
         });
     });
+    
 });

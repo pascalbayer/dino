@@ -1,8 +1,40 @@
 # Dino
 
-A simple DynamoDB object modeler for Node.js.
+A simple [Amazon DynamoDB](http://aws.amazon.com/dynamodb/) object modeler for Node.js.
 
 [![Build Status](https://secure.travis-ci.org/christophercliff/dino.png?branch=master)](https://travis-ci.org/christophercliff/dino)
+
+## Usage
+
+```js
+var dino = require('dino');
+
+dino.connect({
+    accessKeyId: 'MY_KEY',
+    secretAccessKey: 'MY_SECRET',
+    region: 'us-east-1'
+});
+
+var Forum = dino.model({
+    schema: dino.schema({
+        table: 'forums',
+        attributes: {
+            name: dino.types.string,
+            category: dino.types.string
+        },
+        key: {
+            hash: 'name'
+        }
+    })
+});
+
+var forum = Forum.create({
+    name: 'Amazon DynamoDB',
+    category: 'Amazon Web Services'
+});
+
+forum.save();
+```
 
 ## Installation
 
@@ -10,183 +42,267 @@ A simple DynamoDB object modeler for Node.js.
 $ npm install dino
 ```
 
-## Usage
+## API
 
-Cross-ref with [Amazon's sample data](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SampleTablesAndData.html):
+- [`connect()`](#connectoptions)
+- [`connection.client`](#connectionclient)
+- [`connection.create()`](#connectioncreateoptions)
+- [`schema()`](#schemaoptions)
+- [`schema.createTable()`](#schemacreatetableoptions)
+- [`type()`](#typeoptions)
+- [`model()`](#modeloptions)
+- [`Model.create()`](#modelcreateattributes)
+- [`Model.findOne()`](#modelfindoneoptions-callback)
+- [`Model.find()`](#modelfindoptions-callback)
+- [`Model.destroy()`](#modeldestroyoptions-callback)
+- [`model.set()`](#modelsetattributes)
+- [`model.get()`](#modelgetattribute)
+- [`model.save()`](#modelsavecallback)
+- [`model.destroy()`](#modeldestroycallback)
+- [`model.toJSON()`](#modeltojson)
+- [`collection.toJSON()`](#collectiontojson)
+- [`collection.models`](#collectionmodels)
 
-### connect
+### `connect(options)`
 
-Creates a DynamoDB client using your credentials. Alternatively, you can omit this and [use environment variables](http://docs.aws.amazon.com/nodejs/latest/dg/configuration-guide.html#nodejs-dg-credentials-from-environment-variables) instead.
+Sets the default [DynamoDB client](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/Client.html) for your application. Alternatively, you can omit this and [use environment variables](http://docs.aws.amazon.com/nodejs/latest/dg/configuration-guide.html#nodejs-dg-credentials-from-environment-variables).
 
 ```js
 dino.connect({
-    accessKeyId: 'YOUR_KEY',
-    secretAccessKey: 'YOUR_SECRET',
+    accessKeyId: 'MY_KEY',
+    secretAccessKey: 'MY_SECRET',
     region: 'us-east-1'
 });
 ```
 
-### Schema
+#### options
 
-Sets the table, property types and primary keys.
+- `accessKeyId` (required)
+- `secretAccessKey` (required)
+- `region` (required)
+
+### `connection.client`
+
+The default DynamoDB client.
+
+### `connection.create(options)`
+
+Creates a DynamoDB client to be used at your will.
 
 ```js
-var table = 'forums',
-    attributes = {
-        name: dino.types.String,
-        category: dino.types.String,
-        thread_count: dino.types.Number,
-        view_count: dino.types.Number,
-        last_post_author: dino.types.String,
-        last_post_date: dino.types.Date
+var client = dino.connection.create({
+    accessKeyId: 'MY_OTHER_KEY',
+    secretAccessKey: 'MY_OTHER_SECRET',
+    region: 'us-east-1'
+});
+```
+
+#### options
+
+- `accessKeyId` (required)
+- `secretAccessKey` (required)
+- `region` (required)
+
+### `schema(options)`
+
+Creates a schema.
+
+```js
+var forumSchema = dino.schema({
+    table: 'forums',
+    attributes: {
+        name: dino.types.string,
+        category: dino.types.string
     },
-    key = {
+    key: {
         hash: 'name'
-    },
-    schema = new dino.Schema(table, attributes, key);
-```
-
-#### Types
-
-Dino ships with several schema types:
-
-- `dino.types.Boolean`
-- `dino.types.Date`
-- `dino.types.Id`
-- `dino.types.Number`
-- `dino.types.Object`
-- `dino.types.String`
-
-To create a custom type, extend `dino.Type`:
-
-```js
-var MyType = dino.Type.extend({
-    defaultValue: function () {},
-    parseValue: function (val) {},
-    transformValue: function (val) {}
+    }
 });
 ```
 
-### Model
+#### options
 
-Extend `dino.Model` to create a model definition. All models require an instance of `dino.Schema`.
+- `table` (required)
+- `attributes` (required)
+- `key` (required)
+- `keyDelimiter`
+
+#### types
+
+- `boolean`
+- `date`
+- `id`
+- `number`
+- `object`
+- `string`
+
+### schema.createTable(options);
+
+Creates a table in DynamoDB.
 
 ```js
-var Forum = dino.Model.extend({
-    schema: new dino.Schema(table, attributes, key)
-});
+forumSchema.createTable({
+    readUnits: 1,
+    writeUnits: 1
+}, function(err, units){  });
+```
 
-var forum = new Forum({
+#### options
+
+- `client`
+- `readUnits`
+- `writeUnits`
+
+### type(options)
+
+Creates a schema type.
+
+```js
+var myType = dino.type({
+    defaultValue: null,
+    serialize: function (val) { return val; },
+    deserialize: function (val) { return val; },
+    toJSON: function (val) { return val; }
+});
+```
+
+#### options
+
+- `defaultValue`
+- `serialize`
+- `deserialize`
+- `toJSON`
+
+### `model(options)`
+
+Creates a Model object. Use Model objects to create and query models.
+
+```js
+var Forum = dino.model({
+    schema: forumSchema
+});
+```
+
+#### options
+
+- `schema` (required)
+- `client`
+
+### `Model.create(attributes)`
+
+Creates a model.
+
+```js
+var forum = Forum.create({
     name: 'Amazon DynamoDB',
-    category: 'Amazon Web Services',
-    thread_count: 3,
-    view_count: 4,
-    last_post_author: 'User A',
-    last_post_date: moment.utc()
-})
-```
-
-#### save
-
-Saves the model.
-
-```js
-forum.save(function(err, units){
-    
+    category: 'Amazon Web Services'
 });
 ```
 
-#### destroy
+### `Model.findOne(options[, callback])`
 
-Deletes the model.
-
-```js
-forum.destroy(function(err, units){
-    // (poof)
-});
-```
-
-#### find
-
-Returns an array of model instances.
-
-```js
-// Find the first page of replies for a thread
-Reply.find({
-    hash: ['Amazon DynamoDB', 'DynamoDB Thread 1'],
-    skip: 0,
-    take: 10
-}, function(err, forums, units){
-    
-});
-```
-
-Query parameters:
-
-- hash (required)
-- range
-- skip
-- take
-
-#### findOne
-
-Returns a single model by hash and/or range key.
+Queries DynamoDB for a single model.
 
 ```js
 Forum.findOne({
     hash: 'Amazon DynamoDB'
-}, function(err, forum, units){
-    
-});
+}, function(err, forum, units){  });
+```
 
-Reply.findOne({
+#### options
+
+- `hash` (required)
+- `range`
+
+### `Model.find(options[, callback])`
+
+Queries DynamoDB for a collection of models.
+
+```js
+Reply.find({
     hash: ['Amazon DynamoDB', 'DynamoDB Thread 1'],
-    range: '2011-12-11T00:40:57.165Z'
-}, function(err, reply, units){
-    
+    take: 10
+}, function(err, replies, units){  });
+```
+
+#### options
+
+- `hash` (required)
+- `range`
+- `skip`
+- `take`
+
+### `Model.destroy(options[, callback])`
+
+Deletes a model from DynamoDB.
+
+```js
+Forum.destroy({
+    hash: 'Amazon DynamoDB'
+}, function(err, units){  });
+```
+
+#### options
+
+- `hash` (required)
+- `range`
+
+### `model.set(attributes)`
+
+Sets the model's attributes.
+
+```js
+forum.set({
+    name: 'Amazon S3'
 });
 ```
 
-#### toJSON
+### `model.get(attribute)`
 
-Returns a JSON-like representation of the model's properties.
+Gets the model's attributes.
+
+```js
+forum.get('name'); // 'Amazon S3'
+```
+
+### `model.save([callback])`
+
+Saves the model to DynamoDB.
+
+```js
+forum.save(function(err, units){  });
+```
+
+### `model.destroy([callback])`
+
+Deletes the model from DynamoDB.
+
+```js
+forum.destroy(function(err, units){  });
+```
+
+### `model.toJSON()`
+
+Returns the JSON serialized attributes of the model.
 
 ```js
 forum.toJSON();
-
-//  {
-//    name: 'Amazon DynamoDB',
-//    category: 'Amazon Web Services',
-//    thread_count: 3,
-//    view_count: 4,
-//    last_post_author: 'User A',
-//    last_post_date: [Object]
-//  }
 ```
 
-### Key Smushing
+### `collection.toJSON()`
 
-DynamoDB's [Query API](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/API_Query.html) allows you to query by hash and range primary keys. To create more complex queries, you can combine multiple attributes into a single key. Dino accepts arrays as key definitions and will combine and parse these attributes automatically.
+Returns an array where each model in the collection has been JSON serialized.
 
 ```js
-var table = 'threads',
-    attributes = {
-        forum_name: String,
-        subject: Number
-    },
-    key = {
-        hash: ['forum_name', 'subject'] // smush together
-    },
-    Thread = dino.Model.extend({
-        schema: new dino.Schema(table, attributes, key)
-    });
+replies.toJSON();
+```
 
-new Thread({
-    forum_name: 'Amazon DynamoDB',
-    subject: 'DynamoDB Thread 1'
-}).save();
+### `collection.models`
 
-// "forum_name#subject": "Amazon DynamoDB#DynamoDB Thread 1"
+The raw array of models in the collection.
+
+```js
+replies.models;
 ```
 
 ## Tests
