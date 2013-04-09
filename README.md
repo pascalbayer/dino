@@ -54,6 +54,7 @@ $ npm install dino
 - [`Model.create()`](#connectoptions)
 - [`Model.findOne()`](#connectoptions)
 - [`Model.find()`](#connectoptions)
+- [`Model.destroy()`](#connectoptions)
 - [`model.set()`](#connectoptions)
 - [`model.get()`](#connectoptions)
 - [`model.save()`](#connectoptions)
@@ -221,6 +222,21 @@ Reply.find({
 - `range`
 - `skip`
 - `take`
+
+### `Model.destroy(options[, callback])`
+
+Deletes a model from DynamoDB.
+
+```js
+Forum.destroy({
+    hash: 'Amazon DynamoDB'
+}, function(err, units){  });
+```
+
+#### options
+
+- `hash` (required)
+- `range`
 
 ### `model.set(attributes)`
 
