@@ -2,6 +2,8 @@
 
 A simple [Amazon DynamoDB](http://aws.amazon.com/dynamodb/) object modeler for Node.js.
 
+Dino doesn't do everything, but it does the basics and it does them well. The API is pretty squared away and well tested. If you want to get weird with your data, Dino exposes the low-level `aws-sdk` client to your models. Maybe some common patterns will emerge and be pulled in. There's a pull request button [up there](https://github.com/christophercliff/dino/pull/new/master).
+
 [![Build Status](https://secure.travis-ci.org/christophercliff/dino.png?branch=master)](https://travis-ci.org/christophercliff/dino)
 
 ## Usage
@@ -15,7 +17,7 @@ dino.connect({
     region: 'us-east-1'
 });
 
-var forumModel = dino.model({
+var Forum = dino.model({
     schema: dino.schema({
         table: 'forums',
         attributes: {
@@ -28,7 +30,7 @@ var forumModel = dino.model({
     })
 });
 
-var forum = forumModel.create({
+var forum = Forum.create({
     name: 'Amazon DynamoDB',
     category: 'Amazon Web Services'
 });
@@ -64,7 +66,7 @@ $ npm install dino
 
 ### `connect(options)`
 
-Sets the default [DynamoDB client](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/Client.html). Alternatively, omit this and [use environment variables](http://docs.aws.amazon.com/nodejs/latest/dg/configuration-guide.html#nodejs-dg-credentials-from-environment-variables).
+Sets the default [DynamoDB client](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/Client.html) for your application. Alternatively, you can omit this and [use environment variables](http://docs.aws.amazon.com/nodejs/latest/dg/configuration-guide.html#nodejs-dg-credentials-from-environment-variables).
 
 ```js
 dino.connect({
@@ -86,7 +88,7 @@ The default DynamoDB client.
 
 ### `connection.create(options)`
 
-Creates a DynamoDB client.
+Creates a DynamoDB client to be used at your will.
 
 ```js
 var client = dino.connection.create({
@@ -143,7 +145,7 @@ Creates a table in DynamoDB.
 forumSchema.createTable(function(err, units){  });
 ```
 
-### type()
+### type(options)
 
 Creates a schema type.
 
@@ -165,7 +167,7 @@ var myType = dino.type({
 
 ### `model(options)`
 
-Creates a Model object. Use the Model object to create and query models.
+Creates a Model object. Use Model objects to create and query models.
 
 ```js
 var Forum = dino.model({
@@ -180,7 +182,7 @@ var Forum = dino.model({
 
 ### `Model.create(attributes)`
 
-Creates an instance of a model.
+Creates a model.
 
 ```js
 var forum = Forum.create({
@@ -224,7 +226,7 @@ Reply.find({
 
 ### `model.set(attributes)`
 
-Sets the model attributes.
+Sets the model's attributes.
 
 ```js
 forum.set({
@@ -234,7 +236,7 @@ forum.set({
 
 ### `model.get(attribute)`
 
-Gets the model attributes.
+Gets the model's attributes.
 
 ```js
 forum.get('name'); // 'Amazon S3'
