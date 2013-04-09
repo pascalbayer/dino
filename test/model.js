@@ -25,60 +25,64 @@ describe('model', function(){
         });
     });
     
-    describe('findOne', function(){
+    describe('Model', function(){
         
-        
-        
-    });
-    
-    describe('find', function(){
-        
-        
-        
-    });
-    
-    describe('create', function(){
-        
-        it('should create an instance of a model', function(){
-            m.should.have.property('attributes');
-            m.should.have.property('schema');
-            m.schema.should.equal(schema);
-            m.should.have.property('client');
-            m.client.should.equal(dino.connection.client);
+        describe('findOne', function(){
+            
+            
+            
         });
         
-         it('should use the correct client', function(){
+        describe('find', function(){
+            
+            
+            
+        });
+        
+        describe('create', function(){
+            
+            it('should create an instance of a model', function(){
+                m.should.have.property('attributes');
+                m.should.have.property('schema');
+                m.schema.should.equal(schema);
                 m.should.have.property('client');
                 m.client.should.equal(dino.connection.client);
-                dino.connect({
-                    accessKeyId: 'AAA',
-                    secretAccessKey: 'AAA',
-                    region: 'us-east-1'
-                });
-                model = dino.model({
-                    schema: schema
-                });
-                m = model.create({
-                    name: 'chris'
-                });
-                m.client.should.eql(dino.connection.client);
-                var client = dino.connection.create({
-                    accessKeyId: 'BBB',
-                    secretAccessKey: 'BBB',
-                    region: 'us-east-1'
-                });
-                model = dino.model({
-                    schema: schema,
-                    client: client
-                });
-                m = model.create({
-                    name: 'chris'
-                });
-                m.client.should.eql(client);
             });
-        
-        it('should set attribute values', function(){
-            m.attributes.name.should.eql('chris');
+            
+            it('should use the correct client', function(){
+                    m.should.have.property('client');
+                    m.client.should.equal(dino.connection.client);
+                    dino.connect({
+                        accessKeyId: 'AAA',
+                        secretAccessKey: 'AAA',
+                        region: 'us-east-1'
+                    });
+                    model = dino.model({
+                        schema: schema
+                    });
+                    m = model.create({
+                        name: 'chris'
+                    });
+                    m.client.should.eql(dino.connection.client);
+                    var client = dino.connection.create({
+                        accessKeyId: 'BBB',
+                        secretAccessKey: 'BBB',
+                        region: 'us-east-1'
+                    });
+                    model = dino.model({
+                        schema: schema,
+                        client: client
+                    });
+                    m = model.create({
+                        name: 'chris'
+                    });
+                    m.client.should.eql(client);
+                });
+            
+            it('should set attribute values', function(){
+                m.attributes.name.should.eql('chris');
+            });
+            
         });
         
     });
@@ -122,7 +126,17 @@ describe('model', function(){
     
     describe('toJSON', function(){
         
+        it('should convert attributes to JSON', function(){
+            m.toJSON().should.eql(m.attributes);
+        });
         
+    });
+    
+    describe('serialize', function(){
+        
+        it('should serialize the model into DynamoDB format', function(){
+            
+        });
         
     });
     
