@@ -2,7 +2,7 @@
 
 A simple [Amazon DynamoDB](http://aws.amazon.com/dynamodb/) object modeler for Node.js.
 
-Dino doesn't do everything, but it does the basics and it does them well. The API is pretty squared away and well tested. If you want to write your first [Express](http://expressjs.com/) or [Restify](http://mcavage.github.io/node-restify/) app, this is a good place to start. If you want to get weird with your data, the low-level `aws-sdk` client is exposed to your models. Maybe some common patterns will emerge and be pulled in.
+Dino doesn't do everything, but it does the basics and it does them well. The API is pretty squared away and well tested. If you want to write your first [Express](http://expressjs.com/) or [Restify](http://mcavage.github.io/node-restify/) app, this is a good place to start. If you want to get weird with your data, the [low-level `aws-sdk` client](https://github.com/aws/aws-sdk-js) is exposed to your models. Maybe some common patterns will emerge and be pulled in.
 
 There's a pull request button [up there](https://github.com/christophercliff/dino/pull/new/master) :point_up:.
 
