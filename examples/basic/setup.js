@@ -1,24 +1,20 @@
 var fs = require('fs'),
-    AWS = require('aws-sdk'),
     config = JSON.parse(fs.readFileSync('./aws-config.json')),
-    client = new AWS.DynamoDB({
-        credentials: config,
-        region: config.region
-    }).client;
+    dino = require('../../'),
+    User = require('./models/user'),
+    Post = require('./models/post'),
+    client = dino.connection.create(config);
 
-client.createTable({
-    TableName: 'dino_example_users',
-    KeySchema: {
-        HashKeyElement: {
-            AttributeName: 'id',
-            AttributeType: 'S'
-        }
-    },
-    ProvisionedThroughput: {
-        ReadCapacityUnits: 1,
-        WriteCapacityUnits: 1
-    }
+Post.schema.createTable({
+    client: client
 }, function(err){
     if (err) return console.log(err);
-    console.log('Success!');
+    console.log('Created dino_example_posts table!');
+});
+
+User.schema.createTable({
+    client: dino.connection.create(config)
+}, function(err){
+    if (err) return console.log(err);
+    console.log('Created dino_example_users table!');
 });
