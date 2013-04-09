@@ -16,6 +16,7 @@ describe('model', function(){
         m;
     
     beforeEach(function(){
+        dino.connect();
         model = dino.model({
             schema: schema
         });
@@ -53,6 +54,9 @@ describe('model', function(){
                     accessKeyId: 'AAA',
                     secretAccessKey: 'AAA',
                     region: 'us-east-1'
+                });
+                model = dino.model({
+                    schema: schema
                 });
                 m = model.create({
                     name: 'chris'
@@ -118,9 +122,7 @@ describe('model', function(){
     
     describe('toJSON', function(){
         
-        it('should return a JSON representation of the attributes', function(){
-            m.toJSON().should.eql(m.attributes);
-        });
+        
         
     });
     
