@@ -1,4 +1,5 @@
 var should = require('should'),
+    moment = require('moment'),
     dino = require('../');
 
 describe('model', function(){
@@ -6,21 +7,28 @@ describe('model', function(){
     var schema = dino.schema({
             table: 'forums',
             attributes: {
-                name: dino.types.string
+                name: dino.types.string,
+                category: dino.types.string,
+                thread_count: dino.types.number,
+                message_count: dino.types.number,
+                is_new: dino.types.boolean,
+                last_post_author: dino.types.string,
+                last_post_date: dino.types.date
             },
             key: {
                 hash: 'name'
             }
         }),
-        model,
-        m;
+        now = moment.utc(),
+        Forum,
+        forum;
     
     beforeEach(function(){
         dino.connect();
-        model = dino.model({
+        Forum = dino.model({
             schema: schema
         });
-        m = model.create({
+        forum = Forum.create({
             name: 'chris'
         });
     });
@@ -42,45 +50,82 @@ describe('model', function(){
         describe('create', function(){
             
             it('should create an instance of a model', function(){
-                m.should.have.property('attributes');
-                m.should.have.property('schema');
-                m.schema.should.equal(schema);
-                m.should.have.property('client');
-                m.client.should.equal(dino.connection.client);
+                forum.should.have.property('attributes');
+                forum.should.have.property('schema');
+                forum.schema.should.equal(schema);
+                forum.should.have.property('client');
+                forum.client.should.equal(dino.connection.client);
             });
             
             it('should use the correct client', function(){
-                    m.should.have.property('client');
-                    m.client.should.equal(dino.connection.client);
+                    forum.should.have.property('client');
+                    forum.client.should.equal(dino.connection.client);
                     dino.connect({
                         accessKeyId: 'AAA',
                         secretAccessKey: 'AAA',
                         region: 'us-east-1'
                     });
-                    model = dino.model({
+                    Forum = dino.model({
                         schema: schema
                     });
-                    m = model.create({
+                    forum = Forum.create({
                         name: 'chris'
                     });
-                    m.client.should.eql(dino.connection.client);
+                    forum.client.should.eql(dino.connection.client);
                     var client = dino.connection.create({
                         accessKeyId: 'BBB',
                         secretAccessKey: 'BBB',
                         region: 'us-east-1'
                     });
-                    model = dino.model({
+                    Forum = dino.model({
                         schema: schema,
                         client: client
                     });
-                    m = model.create({
+                    forum = Forum.create({
                         name: 'chris'
                     });
-                    m.client.should.eql(client);
+                    forum.client.should.eql(client);
                 });
             
             it('should set attribute values', function(){
-                m.attributes.name.should.eql('chris');
+                forum.attributes.name.should.eql('chris');
+            });
+            
+        });
+        
+        describe('destroy', function(){
+            
+            
+            
+        });
+        
+        describe('parse', function(){
+            
+            it('parses combo keys', function(){
+                
+                var Artifact = dino.model({
+                        schema: dino.schema({
+                            table: 'artifacts',
+                            attributes: {
+                                user_id: dino.types.string,
+                                date_created: dino.types.date,
+                                id: dino.types.id
+                            },
+                            key: {
+                                hash: 'user_id',
+                                range: ['date_created', 'id']
+                            }
+                        })
+                    }),
+                    parsed = Artifact.parse({
+                        'user_id': { S: 'ctcliff' },
+                        'date_created#id': { S: '2013-03-27T19:21:54+00:00#12345' }
+                    });
+                
+                parsed.get('user_id').should.equal('ctcliff');
+                parsed.get('id').should.equal('12345');
+                moment.isMoment(parsed.get('date_created')).should.be.true;
+                parsed.get('date_created').format().should.equal('2013-03-27T19:21:54+00:00');
             });
             
         });
@@ -90,12 +135,12 @@ describe('model', function(){
     describe('set', function(){
         
         it('should set attribute values', function(){
-            m = model.create();
-            should.not.exist(m.attributes.name);
-            m.set({
+            forum = Forum.create();
+            should.not.exist(forum.attributes.name);
+            forum.set({
                 name: 'chris'
             });
-            m.attributes.name.should.equal('chris');
+            forum.attributes.name.should.equal('chris');
         });
         
     });
@@ -103,11 +148,27 @@ describe('model', function(){
     describe('get', function(){
         
         it('should get attribute values', function(){
-            var m = model.create({
+            forum = Forum.create({
                 name: 'chris'
             });
-            m.get('name').should.equal('chris');
-            should.not.exist(m.get('asdf'));
+            forum.get('name').should.equal('chris');
+            should.not.exist(forum.get('asdf'));
+        });
+        
+    });
+    
+    describe('getHash', function(){
+        
+        it('should get the hash value', function(){
+            forum.getHash().should.eql(['chris']);
+        });
+        
+    });
+    
+    describe('getRange', function(){
+        
+        it('should get the range value', function(){
+            forum.getRange().should.be.null;
         });
         
     });
@@ -127,7 +188,7 @@ describe('model', function(){
     describe('toJSON', function(){
         
         it('should convert attributes to JSON', function(){
-            m.toJSON().should.eql(m.attributes);
+            forum.toJSON().should.eql(forum.attributes);
         });
         
     });
@@ -135,7 +196,15 @@ describe('model', function(){
     describe('serialize', function(){
         
         it('should serialize the model into DynamoDB format', function(){
-            
+            /*forum.toDynamo().should.eql({
+                name: { S: attributes.name },
+                category: { S: attributes.category },
+                thread_count: { N: '3' },
+                message_count: { N: '4' },
+                is_new: { N: '1' },
+                last_post_author: { S: attributes.last_post_author },
+                last_post_date: { S: moment(now).format() }
+            });*/
         });
         
     });
