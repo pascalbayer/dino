@@ -165,7 +165,7 @@ var myType = dino.type({
 
 ### `model(options)`
 
-Creates a Model definition. Use this object to create and query models.
+Creates a Model object. Use the Model object to create and query models.
 
 ```js
 var Forum = dino.model({
@@ -242,7 +242,7 @@ forum.get('name'); // 'Amazon S3'
 
 ### `model.save([callback])`
 
-Saves the instance to DynamoDB.
+Saves the model to DynamoDB.
 
 ```js
 forum.save(function(err, units){  });
@@ -250,7 +250,7 @@ forum.save(function(err, units){  });
 
 ### `model.destroy([callback])`
 
-Deletes the instance from DynamoDB.
+Deletes the model from DynamoDB.
 
 ```js
 forum.destroy(function(err, units){  });
@@ -258,7 +258,7 @@ forum.destroy(function(err, units){  });
 
 ### `model.toJSON()`
 
-Returns the JSON serialized attributes of the instance.
+Returns the JSON serialized attributes of the model.
 
 ```js
 forum.toJSON();
@@ -266,7 +266,7 @@ forum.toJSON();
 
 ### `collection.toJSON()`
 
-Returns an array of JSON serialized models.
+Returns an array where each model in the collection has been JSON serialized.
 
 ```js
 replies.toJSON();
