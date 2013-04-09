@@ -67,13 +67,13 @@ describe('model', function(){
             it('should use the correct client', function(){
                     forum.should.have.property('client');
                     forum.client.should.equal(dino.connection.client);
+                    Forum = dino.model({
+                        schema: schema
+                    });
                     dino.connect({
                         accessKeyId: 'AAA',
                         secretAccessKey: 'AAA',
                         region: 'us-east-1'
-                    });
-                    Forum = dino.model({
-                        schema: schema
                     });
                     forum = Forum.create({
                         name: 'chris'
@@ -219,7 +219,9 @@ describe('model', function(){
                 name: 'Test'
             });
             f.serialize().should.eql({
-                name: { S: 'Test' }
+                name: { S: 'Test' },
+                is_new: { N: "0" },
+                last_post_date: { S: moment(now).format() }
             });
         });
         
