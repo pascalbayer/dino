@@ -29,7 +29,14 @@ describe('model', function(){
             schema: schema
         });
         forum = Forum.create({
-            name: 'chris'
+            name: 'Amazon DynamoDB',
+            category: 'Amazon Web Services',
+            thread_count: 3,
+            message_count: 4,
+            is_new: true,
+            last_post_author: 'Chris',
+            last_post_date: moment(now)
+            
         });
     });
     
@@ -88,7 +95,7 @@ describe('model', function(){
                 });
             
             it('should set attribute values', function(){
-                forum.attributes.name.should.eql('chris');
+                forum.attributes.name.should.eql('Amazon DynamoDB');
             });
             
         });
@@ -160,7 +167,7 @@ describe('model', function(){
     describe('getHash', function(){
         
         it('should get the hash value', function(){
-            forum.getHash().should.eql(['chris']);
+            forum.getHash().should.eql(['Amazon DynamoDB']);
         });
         
     });
@@ -196,15 +203,101 @@ describe('model', function(){
     describe('serialize', function(){
         
         it('should serialize the model into DynamoDB format', function(){
-            /*forum.toDynamo().should.eql({
-                name: { S: attributes.name },
-                category: { S: attributes.category },
+            forum.serialize().should.eql({
+                name: { S: forum.get('name') },
+                category: { S: forum.get('category') },
                 thread_count: { N: '3' },
                 message_count: { N: '4' },
                 is_new: { N: '1' },
-                last_post_author: { S: attributes.last_post_author },
+                last_post_author: { S: forum.get('last_post_author') },
                 last_post_date: { S: moment(now).format() }
-            });*/
+            });
+        });
+        
+        it('should omit null and empty values', function(){
+            var f = Forum.create({
+                name: 'Test'
+            });
+            f.serialize().should.eql({
+                name: { S: 'Test' }
+            });
+        });
+        
+        it('should omit empty arrays', function(){
+            var Cafe = dino.model({
+                    schema: dino.schema({
+                        table: 'cafes',
+                        attributes: {
+                            name: dino.types.string,
+                            drinks: dino.types.string,
+                            snacks: dino.types.string
+                        },
+                        key: {
+                            hash: 'name'
+                        }
+                    })
+                }),
+                c = Cafe.create({
+                    name: 'Lost Weekend NYC',
+                    drinks: [],
+                    snacks: []
+                });
+            
+            c.serialize().should.eql({
+                'name': { S: 'Lost Weekend NYC' }
+            });
+        });
+        
+        it('should combine hash keys', function(){
+            
+            var Reply = dino.model({
+                    schema: dino.schema({
+                        table: 'replies',
+                        attributes: {
+                            table_name: dino.types.string,
+                            thread_name: dino.types.string
+                        },
+                        key: {
+                            hash: ['table_name', 'thread_name']
+                        }
+                    })
+                }),
+                r = Reply.create({
+                    table_name: 'what',
+                    thread_name: 'ever'
+                });
+            
+            r.serialize().should.eql({
+                'table_name#thread_name': { S: 'what#ever' }
+            });
+        });
+        
+        it('should combine range keys', function(){
+            
+            var Artifact = dino.model({
+                    schema: dino.schema({
+                        table: 'artifacts',
+                        attributes: {
+                            user_id: dino.types.string,
+                            date_created: dino.types.date,
+                            id: dino.types.id
+                        }, 
+                        key: {
+                            hash: 'user_id',
+                            range: ['date_created', 'id']
+                        }
+                    })
+                }),
+                a = Artifact.create({
+                    user_id: 'ctcliff',
+                    id: '12345',
+                    date_created: now
+                });
+            
+            a.serialize().should.eql({
+                user_id: { S: 'ctcliff' },
+                'date_created#id': { S: moment(now).format() + '#12345' }
+            });
         });
         
     });
