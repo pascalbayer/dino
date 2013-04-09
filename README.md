@@ -136,13 +136,22 @@ var forumSchema = dino.schema({
 - `object`
 - `string`
 
-### schema.createTable();
+### schema.createTable(options);
 
 Creates a table in DynamoDB.
 
 ```js
-forumSchema.createTable(function(err, units){  });
+forumSchema.createTable({
+    readUnits: 1,
+    writeUnits: 1
+}, function(err, units){  });
 ```
+
+#### options
+
+- `client`
+- `readUnits`
+- `writeUnits`
 
 ### type(options)
 
