@@ -216,7 +216,8 @@ describe('model', function(){
         
         it('should omit null and empty values', function(){
             var f = Forum.create({
-                name: 'Test'
+                name: 'Test',
+                last_post_date: moment(now)
             });
             f.serialize().should.eql({
                 name: { S: 'Test' },
