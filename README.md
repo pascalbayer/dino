@@ -10,8 +10,8 @@ A simple [Amazon DynamoDB](http://aws.amazon.com/dynamodb/) object modeler for N
 var dino = require('dino');
 
 dino.connect({
-    accessKeyId: 'MY_KEY',
-    secretAccessKey: 'MY_SECRET',
+    accessKeyId: 'YOUR_KEY',
+    secretAccessKey: 'YOUR_SECRET',
     region: 'us-east-1'
 });
 
@@ -91,8 +91,8 @@ Creates a DynamoDB client to be used at your will.
 
 ```js
 var client = dino.connection.create({
-    accessKeyId: 'MY_OTHER_KEY',
-    secretAccessKey: 'MY_OTHER_SECRET',
+    accessKeyId: 'YOUR_OTHER_KEY',
+    secretAccessKey: 'YOUR_OTHER_SECRET',
     region: 'us-east-1'
 });
 ```
@@ -314,12 +314,7 @@ $ npm install
 $ npm test
 ```
 
-## License
+## Changelog
 
-Copyright (C) 2013 Christopher Cliff
+### 0.3.0 &mdash; [May 5, 2013](https://github.com/christophercliff/dino/compare/0.2.3...0.3.0)
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
