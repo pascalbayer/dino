@@ -69,8 +69,8 @@ Sets the default [DynamoDB client](http://docs.aws.amazon.com/AWSJavaScriptSDK/l
 
 ```js
 dino.connect({
-    accessKeyId: 'MY_KEY',
-    secretAccessKey: 'MY_SECRET',
+    accessKeyId: 'YOUR_KEY',
+    secretAccessKey: 'YOUR_SECRET',
     region: 'us-east-1'
 });
 ```
@@ -142,8 +142,8 @@ Creates a table in DynamoDB.
 
 ```js
 forumSchema.createTable({
-    readUnits: 1,
-    writeUnits: 1
+    readUnits: 5,
+    writeUnits: 2
 }, function(err, units){  });
 ```
 
@@ -205,14 +205,9 @@ Queries DynamoDB for a single model.
 
 ```js
 Forum.findOne({
-    hash: 'Amazon DynamoDB'
+    name: 'Amazon DynamoDB'
 }, function(err, forum, units){  });
 ```
-
-#### options
-
-- `hash` (required)
-- `range`
 
 ### `Model.find(options[, callback])`
 
@@ -220,15 +215,17 @@ Queries DynamoDB for a collection of models.
 
 ```js
 Reply.find({
-    hash: ['Amazon DynamoDB', 'DynamoDB Thread 1'],
+    attributes: {
+        forum_name: 'Amazon DynamoDB',
+        thread_name: 'DynamoDB Thread 1'
+    }
     take: 10
 }, function(err, replies, units){  });
 ```
 
 #### options
 
-- `hash` (required)
-- `range`
+- `attributes` (required)
 - `skip`
 - `take`
 
@@ -238,14 +235,9 @@ Deletes a model from DynamoDB.
 
 ```js
 Forum.destroy({
-    hash: 'Amazon DynamoDB'
+    name: 'Amazon DynamoDB'
 }, function(err, units){  });
 ```
-
-#### options
-
-- `hash` (required)
-- `range`
 
 ### `model.set(attributes)`
 
