@@ -200,7 +200,15 @@ describe('model', function(){
     describe('toJSON', function(){
         
         it('should convert attributes to JSON', function(){
-            forum.toJSON().should.eql(forum.attributes);
+            forum.toJSON().should.eql({
+                name: 'Amazon DynamoDB',
+                category: 'Amazon Web Services',
+                thread_count: 3,
+                message_count: 4,
+                is_new: true,
+                last_post_author: 'Chris',
+                last_post_date: now.format()
+            });
         });
         
     });
