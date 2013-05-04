@@ -36,7 +36,6 @@ describe('model', function(){
             is_new: true,
             last_post_author: 'Chris',
             last_post_date: moment(now)
-            
         });
     });
     
@@ -60,39 +59,45 @@ describe('model', function(){
                 forum.should.have.property('attributes');
                 forum.should.have.property('schema');
                 forum.schema.should.equal(schema);
-                forum.should.have.property('client');
-                forum.client.should.equal(dino.connection.client);
             });
             
             it('should use the correct client', function(){
-                    forum.should.have.property('client');
-                    forum.client.should.equal(dino.connection.client);
-                    Forum = dino.model({
-                        schema: schema
-                    });
-                    dino.connect({
-                        accessKeyId: 'AAA',
-                        secretAccessKey: 'AAA',
-                        region: 'us-east-1'
-                    });
-                    forum = Forum.create({
-                        name: 'chris'
-                    });
-                    forum.client.should.eql(dino.connection.client);
-                    var client = dino.connection.create({
-                        accessKeyId: 'BBB',
-                        secretAccessKey: 'BBB',
-                        region: 'us-east-1'
-                    });
-                    Forum = dino.model({
-                        schema: schema,
-                        client: client
-                    });
-                    forum = Forum.create({
-                        name: 'chris'
-                    });
-                    forum.client.should.eql(client);
+                forum.should.have.property('connection');
+                forum.connection.client.should.equal(dino.connection.client);
+                Forum.should.have.property('connection');
+                Forum.connection.client.should.equal(dino.connection.client);
+                Forum = dino.model({
+                    schema: schema
                 });
+                dino.connect({
+                    accessKeyId: 'AAA',
+                    secretAccessKey: 'AAA',
+                    region: 'us-east-1'
+                });
+                forum = Forum.create({
+                    name: 'chris'
+                });
+                forum.connection.client.should.equal(dino.connection.client);
+                forum.connection.client.config.credentials.accessKeyId.should.equal('AAA');
+                Forum.connection.client.should.equal(dino.connection.client);
+                Forum.connection.client.config.credentials.accessKeyId.should.equal('AAA');
+                var client = dino.connection.create({
+                    accessKeyId: 'BBB',
+                    secretAccessKey: 'BBB',
+                    region: 'us-east-1'
+                });
+                Forum = dino.model({
+                    schema: schema,
+                    client: client
+                });
+                forum = Forum.create({
+                    name: 'chris'
+                });
+                forum.connection.client.should.equal(client);
+                forum.connection.client.config.credentials.accessKeyId.should.equal('BBB');
+                Forum.connection.client.should.equal(client);
+                Forum.connection.client.config.credentials.accessKeyId.should.equal('BBB');
+            });
             
             it('should set attribute values', function(){
                 forum.attributes.name.should.eql('Amazon DynamoDB');
