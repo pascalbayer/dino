@@ -353,7 +353,7 @@ describe('schema', function(){
                         ComparisonOperator: 'EQ'
                     }
                 },
-                IndexName: 'id',
+                IndexName: 'index:id',
                 ScanIndexForward: false,
                 Select: 'ALL_ATTRIBUTES'
             });
