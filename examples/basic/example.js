@@ -16,40 +16,29 @@ var user = User.create({
 });
 
 user.save(function(err){
-    
     if (err) return console.log(err);
-    
     console.log('Saved user: ' + user.get('name'));
-    
     var post = Post.create({
         user_id: user.get('id'),
         title: 'My First Post',
         body: 'etc...'
     });
-    
     post.save(function(err){
-        
         if (err) return console.log(err);
-        
         console.log('Saved post: ' + post.get('title'));
-        
         Post.find({
-            hash: user.get('id')
+            match: {
+                user_id: user.get('id')
+            }
         }, function(err, posts){
-            
             if (err) return console.log(err);
-            
             console.log('Found posts: ', posts.toJSON());
         });
-        
     });
-    
     User.findOne({
-        hash: user.get('id')
+        id: user.get('id')
     }, function(err, u){
-        
         if (err) return console.log(err);
-        
         console.log('Found user: ', u.get('name'));
     });
 });

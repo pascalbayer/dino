@@ -10,8 +10,8 @@ A simple [Amazon DynamoDB](http://aws.amazon.com/dynamodb/) object modeler for N
 var dino = require('dino');
 
 dino.connect({
-    accessKeyId: 'MY_KEY',
-    secretAccessKey: 'MY_SECRET',
+    accessKeyId: 'YOUR_KEY',
+    secretAccessKey: 'YOUR_SECRET',
     region: 'us-east-1'
 });
 
@@ -69,8 +69,8 @@ Sets the default [DynamoDB client](http://docs.aws.amazon.com/AWSJavaScriptSDK/l
 
 ```js
 dino.connect({
-    accessKeyId: 'MY_KEY',
-    secretAccessKey: 'MY_SECRET',
+    accessKeyId: 'YOUR_KEY',
+    secretAccessKey: 'YOUR_SECRET',
     region: 'us-east-1'
 });
 ```
@@ -91,8 +91,8 @@ Creates a DynamoDB client to be used at your will.
 
 ```js
 var client = dino.connection.create({
-    accessKeyId: 'MY_OTHER_KEY',
-    secretAccessKey: 'MY_OTHER_SECRET',
+    accessKeyId: 'YOUR_OTHER_KEY',
+    secretAccessKey: 'YOUR_OTHER_SECRET',
     region: 'us-east-1'
 });
 ```
@@ -142,8 +142,8 @@ Creates a table in DynamoDB.
 
 ```js
 forumSchema.createTable({
-    readUnits: 1,
-    writeUnits: 1
+    readUnits: 5,
+    writeUnits: 2
 }, function(err, units){  });
 ```
 
@@ -199,20 +199,15 @@ var forum = Forum.create({
 });
 ```
 
-### `Model.findOne(options[, callback])`
+### `Model.findOne(match[, callback])`
 
 Queries DynamoDB for a single model.
 
 ```js
 Forum.findOne({
-    hash: 'Amazon DynamoDB'
+    name: 'Amazon DynamoDB'
 }, function(err, forum, units){  });
 ```
-
-#### options
-
-- `hash` (required)
-- `range`
 
 ### `Model.find(options[, callback])`
 
@@ -220,32 +215,30 @@ Queries DynamoDB for a collection of models.
 
 ```js
 Reply.find({
-    hash: ['Amazon DynamoDB', 'DynamoDB Thread 1'],
+    match: {
+        forum_name: 'Amazon DynamoDB',
+        thread_name: 'DynamoDB Thread 1'
+    }
     take: 10
 }, function(err, replies, units){  });
 ```
 
 #### options
 
-- `hash` (required)
-- `range`
+- `match` (required)
 - `skip`
 - `take`
+- `sortBy`
 
-### `Model.destroy(options[, callback])`
+### `Model.destroy(match[, callback])`
 
 Deletes a model from DynamoDB.
 
 ```js
 Forum.destroy({
-    hash: 'Amazon DynamoDB'
+    name: 'Amazon DynamoDB'
 }, function(err, units){  });
 ```
-
-#### options
-
-- `hash` (required)
-- `range`
 
 ### `model.set(attributes)`
 
@@ -314,12 +307,8 @@ $ npm install
 $ npm test
 ```
 
-## License
+## Changelog
 
-Copyright (C) 2013 Christopher Cliff
+### 0.3.0 &mdash; [May 5, 2013](https://github.com/christophercliff/dino/compare/0.2.3...0.3.0)
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+- Migrated to DynamoDB API version 2012-08-10, which allows for secondary indexes. You can now query, sort and destroy by secondary index. Review the documentation on `find()`, `findOne`, and `destroy()` to see the changes to the API.

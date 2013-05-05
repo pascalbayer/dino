@@ -8,11 +8,12 @@ module.exports = exports = dino.model({
             date_created: dino.types.date,
             id: dino.types.id,
             title: dino.types.string,
-            body: dino.types.string,
+            body: dino.types.string
         },
         key: {
             hash: 'user_id',
-            range: ['date_created', 'id']
+            range: 'date_created',
+            secondary: 'id'
         }
     })
 });
