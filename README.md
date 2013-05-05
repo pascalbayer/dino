@@ -118,20 +118,6 @@ var forumSchema = dino.schema({
         hash: 'name'
     }
 });
-
-var postSchema = dino.schema({
-    table: 'posts',
-    attributes: {
-        author_id: dino.types.string,
-        date_created: dino.types.date,
-        id: dino.types.id
-    },
-    key: {
-        hash: 'author_id',
-        range: 'date_created',
-        secondary: 'id'
-    }
-});
 ```
 
 #### options
@@ -221,11 +207,6 @@ Queries DynamoDB for a single model.
 Forum.findOne({
     name: 'Amazon DynamoDB'
 }, function(err, forum, units){  });
-
-Post.findOne({
-    author_id: 'ctcliff',
-    id: '0ab1c29cbe184895b0e0f0ba147d0b03'
-}, function(err, post, units){  });
 ```
 
 ### `Model.find(options[, callback])`
@@ -240,13 +221,6 @@ Reply.find({
     }
     take: 10
 }, function(err, replies, units){  });
-
-President.find({
-    match: {
-        country: 'United States'
-    }
-    sortBy: 'age'
-}, function(err, presidents, units){  });
 ```
 
 #### options
@@ -337,3 +311,4 @@ $ npm test
 
 ### 0.3.0 &mdash; [May 5, 2013](https://github.com/christophercliff/dino/compare/0.2.3...0.3.0)
 
+- Migrated to DynamoDB API version 2012-08-10, which allows for secondary indexes. You can now query and sort by secondary index-review the documentation on `find()`, `findOne`, and `destroy()` to see the changes.
