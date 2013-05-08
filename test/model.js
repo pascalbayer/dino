@@ -59,6 +59,8 @@ describe('model', function(){
                 forum.should.have.property('attributes');
                 forum.should.have.property('schema');
                 forum.schema.should.equal(schema);
+                forum.should.have.property('Model');
+                forum.Model.should.equal(Forum);
             });
             
             it('should use the correct client', function(){
@@ -101,6 +103,18 @@ describe('model', function(){
             
             it('should set attribute values', function(){
                 forum.attributes.name.should.eql('Amazon DynamoDB');
+            });
+            
+            it('should create instance members', function(){
+                Forum = dino.model({
+                    schema: schema,
+                    findOrCreate: function () {
+                        return 'asdf';
+                    }
+                });
+                forum = Forum.create();
+                forum.should.have.property('findOrCreate');
+                forum.findOrCreate().should.equal('asdf');
             });
             
         });
