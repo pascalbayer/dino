@@ -309,6 +309,10 @@ $ npm test
 
 ## Changelog
 
+### 0.3.1 &mdash; [May 8, 2013](https://github.com/christophercliff/dino/compare/0.3.0...0.3.1)
+
+- Fixed regression where instance members weren't being assigned on `Model.create()`.
+
 ### 0.3.0 &mdash; [May 5, 2013](https://github.com/christophercliff/dino/compare/0.2.3...0.3.0)
 
 - Migrated to DynamoDB API version 2012-08-10, which allows for secondary indexes. You can now query, sort and destroy by secondary index. Review the documentation on `find()`, `findOne`, and `destroy()` to see the changes to the API.
