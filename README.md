@@ -309,6 +309,10 @@ $ npm test
 
 ## Changelog
 
+### 0.3.1 &mdash; [May 8, 2013](https://github.com/christophercliff/dino/compare/v0.3.1...v0.3.2)
+
+- Fixed regression where `Model.findOne()` would fail silently on tables w/o a range key.
+
 ### 0.3.1 &mdash; [May 8, 2013](https://github.com/christophercliff/dino/compare/v0.3.0...v0.3.1)
 
 - Fixed regression where instance members weren't being assigned on `Model.create()`.
