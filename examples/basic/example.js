@@ -1,4 +1,5 @@
 var fs = require('fs'),
+    async = require('async'),
     config = JSON.parse(fs.readFileSync('./aws-config.json')),
     dino = require('../../'),
     User = require('./models/user'),
@@ -15,30 +16,29 @@ var user = User.create({
     documents: [{ id: 1, name: 'A' }, { id: 2, name: 'B' }]
 });
 
-user.save(function(err){
+var post = Post.create({
+    user_id: user.get('id'),
+    title: 'My First Post',
+    body: 'etc...'
+});
+
+async.parallel([
+    user.save,
+    post.save
+], function(err, res){
     if (err) return console.log(err);
-    console.log('Saved user: ' + user.get('name'));
-    var post = Post.create({
-        user_id: user.get('id'),
-        title: 'My First Post',
-        body: 'etc...'
-    });
-    post.save(function(err){
-        if (err) return console.log(err);
-        console.log('Saved post: ' + post.get('title'));
-        Post.find({
-            match: {
-                user_id: user.get('id')
-            }
-        }, function(err, posts){
-            if (err) return console.log(err);
-            console.log('Found posts: ', posts.toJSON());
-        });
-    });
     User.findOne({
         id: user.get('id')
     }, function(err, u){
         if (err) return console.log(err);
         console.log('Found user: ', u.get('name'));
+    });
+    Post.find({
+        match: {
+            user_id: user.get('id')
+        }
+    }, function(err, posts){
+        if (err) return console.log(err);
+        console.log('Found posts: ', posts.toJSON());
     });
 });

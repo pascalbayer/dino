@@ -2,7 +2,13 @@
 
 This example will create an example table and populate it with a Dino model.
 
-### 1. Create a file `./aws-config.json` and add your credentials
+### 1. Install dependencies
+
+```
+$ npm install
+```
+
+### 2. Create a file `./aws-config.json` and add your credentials
 
 ```json
 {
@@ -12,13 +18,13 @@ This example will create an example table and populate it with a Dino model.
 }
 ```
 
-### 2. Create an example table
+### 3. Create an example table
 
 ```
 $ node setup
 ```
 
-### 3. Run the example
+### 4. Run the example
 
 ```
 $ node example
