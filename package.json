@@ -1,6 +1,6 @@
 {
   "name": "dino",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "author": "Christopher Cliff <ctcliff@gmail.com>",
   "description": "A simple DynamoDB object modeler for Node.js.",
   "keywords": [
