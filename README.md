@@ -112,10 +112,13 @@ var forumSchema = dino.schema({
     table: 'forums',
     attributes: {
         name: dino.types.string,
-        category: dino.types.string
+        date_created: dino.types.date,
+        author: dino.types.string
     },
     key: {
-        hash: 'name'
+        hash: 'name',
+        range: 'date_created',
+        secondary: 'author'
     }
 });
 ```
@@ -309,7 +312,11 @@ $ npm test
 
 ## Changelog
 
-### 0.3.1 &mdash; [May 8, 2013](https://github.com/christophercliff/dino/compare/v0.3.1...v0.3.2)
+### 0.3.3 &mdash; [May 9, 2013](https://github.com/christophercliff/dino/compare/v0.3.2...v0.3.3)
+
+- Applied `_.bindAll` to Model and Schema objects for easier flow control with [async](https://github.com/caolan/async).
+
+### 0.3.2 &mdash; [May 8, 2013](https://github.com/christophercliff/dino/compare/v0.3.1...v0.3.2)
 
 - Fixed regression where `Model.findOne()` would fail silently on tables w/o a range key.
 
