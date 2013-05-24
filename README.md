@@ -1,6 +1,6 @@
 # Dino
 
-A simple [Amazon DynamoDB](http://aws.amazon.com/dynamodb/) object modeler for Node.js.
+A simple [Amazon DynamoDB](http://aws.amazon.com/dynamodb/) object modeler for Node.js. Dino is designed to leverage the fast (and inexpensive) parts of the DynamoDB API by default. The complete [DynamoDB client](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB_20120810.html) is exposed for extensibility.
 
 [![Build Status](https://secure.travis-ci.org/christophercliff/dino.png?branch=master)](https://travis-ci.org/christophercliff/dino)
 
