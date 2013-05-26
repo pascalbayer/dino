@@ -1,4 +1,5 @@
 var should = require('should'),
+    sinon = require('sinon'),
     moment = require('moment'),
     dino = require('../');
 
@@ -55,13 +56,32 @@ describe('schema', function(){
     });
     
     describe('createTable', function(){
-        
-        it('should create a table', function(){
-            
-            
-            
+
+        var stub;
+
+        beforeEach(function(){
+            stub = sinon.stub(dino.connection.client, 'createTable', function(params, callback){
+                callback(null, 'test');
+            });
         });
-        
+
+        afterEach(function(){
+            dino.connection.client.createTable.restore();
+        });
+
+        it('should create a table with no arguments', function(){
+            schema.createTable();
+            stub.calledWith({
+                TableName: 'forums',
+                ProvisionedThroughput: {
+                    ReadCapacityUnits: 1,
+                    WriteCapacityUnits: 1
+                },
+                AttributeDefinitions: [ { AttributeName: 'name', AttributeType: 'S' } ],
+                KeySchema: [ { AttributeName: 'name', KeyType: 'HASH' } ]
+            }).should.be.true;
+        });
+
     });
     
     describe('add', function(){
