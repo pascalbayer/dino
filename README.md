@@ -147,7 +147,7 @@ Creates a table in DynamoDB.
 forumSchema.createTable({
     readUnits: 5,
     writeUnits: 2
-}, function(err, units){  });
+}, function(err){  });
 ```
 
 #### options

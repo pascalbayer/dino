@@ -57,31 +57,69 @@ describe('schema', function(){
     
     describe('createTable', function(){
 
-        var stub;
+        describe('arguments', function(){
 
-        beforeEach(function(){
-            stub = sinon.stub(dino.connection.client, 'createTable', function(params, callback){
-                callback(null, 'test');
+            var stub,
+                calledParams;
+
+            beforeEach(function(){
+                stub = sinon.stub(dino.connection.client, 'createTable', function(params, callback){
+                    calledParams = params;
+                    callback(null);
+                });
             });
-        });
 
-        afterEach(function(){
-            dino.connection.client.createTable.restore();
-        });
+            afterEach(function(){
+                dino.connection.client.createTable.restore();
+            });
 
-        it('should create a table with no arguments', function(){
-            schema.createTable();
-            stub.calledWith({
-                TableName: 'forums',
-                ProvisionedThroughput: {
-                    ReadCapacityUnits: 1,
-                    WriteCapacityUnits: 1
-                },
-                AttributeDefinitions: [ { AttributeName: 'name', AttributeType: 'S' } ],
-                KeySchema: [ { AttributeName: 'name', KeyType: 'HASH' } ]
-            }).should.be.true;
-        });
+            it('should create a table with no arguments', function(){
+                schema.createTable();
+                stub.calledWith({
+                    TableName: 'forums',
+                    ProvisionedThroughput: {
+                        ReadCapacityUnits: 1,
+                        WriteCapacityUnits: 1
+                    },
+                    AttributeDefinitions: [ { AttributeName: 'name', AttributeType: 'S' } ],
+                    KeySchema: [ { AttributeName: 'name', KeyType: 'HASH' } ]
+                }).should.be.true;
+            });
 
+            it('should create a table with specified read/write throughput', function(done){
+                schema.createTable({
+                    readUnits: 2,
+                    writeUnits: 3
+                }, function(){
+                    calledParams.ProvisionedThroughput.should.eql({
+                        ReadCapacityUnits: 2,
+                        WriteCapacityUnits: 3
+                    });
+                    done();
+                });
+            });
+
+        });
+        
+        describe('callback', function(){
+
+            var cannedErr = new Error('Just a normal error');
+
+            afterEach(function(){
+                dino.connection.client.createTable.restore();
+            });
+
+            it('should callback errors', function(){
+                var stub = sinon.stub(dino.connection.client, 'createTable', function(params, callback){
+                        callback(cannedErr);
+                    }),
+                    spy = sinon.spy();
+                schema.createTable(spy);
+                spy.calledWithExactly(cannedErr).should.be.true;
+            });
+
+        });
+        
     });
     
     describe('add', function(){
