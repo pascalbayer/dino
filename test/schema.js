@@ -15,10 +15,12 @@ describe('schema', function(){
             table: 'forums',
             attributes: {
                 name: dino.types.string,
-                misc: dino.types.object
+                misc: dino.types.object,
+                timestamp: dino.types.string
             },
             key: {
-                hash: 'name'
+                hash: 'name',
+                range: 'timestamp'
             }
         });
         replySchema = dino.schema({
@@ -44,7 +46,7 @@ describe('schema', function(){
             schema.should.have.property('hashKeyAttributes');
             schema.hashKeyAttributes.should.eql(['name']);
             schema.should.have.property('hashKey', 'name');
-            schema.should.have.property('rangeKey', null);
+            schema.should.have.property('rangeKey', 'timestamp');
             schema.should.have.property('keyDelimiter', '#');
         });
         
@@ -81,8 +83,14 @@ describe('schema', function(){
                         ReadCapacityUnits: 1,
                         WriteCapacityUnits: 1
                     },
-                    AttributeDefinitions: [ { AttributeName: 'name', AttributeType: 'S' } ],
-                    KeySchema: [ { AttributeName: 'name', KeyType: 'HASH' } ]
+                    AttributeDefinitions: [
+                        { AttributeName: 'name', AttributeType: 'S' },
+                        { AttributeName: 'timestamp', AttributeType: 'N' } 
+                    ],
+                    KeySchema: [
+                        { AttributeName: 'name', KeyType: 'HASH' },
+                        { AttributeName: 'timestamp', KeyType: 'RANGE' }
+                    ]
                 }).should.be.true;
             });
 
