@@ -182,6 +182,74 @@ describe('schema', function(){
                 });
             });
 
+            it('should create a table with numeric secondary key', function(done){
+                schema = dino.schema({
+                    table: 'forums',
+                    attributes: {
+                        id: dino.types.id,
+                        created_by: dino.types.string,
+                        post_count: dino.types.number
+                    },
+                    key: {
+                        hash: 'id',
+                        range: 'created_by',
+                        secondary: 'post_count'
+                    }
+                });
+                schema.createTable(function(){
+                    calledParams.AttributeDefinitions.should.eql([
+                        { AttributeName: 'id', AttributeType: 'S' },
+                        { AttributeName: 'created_by', AttributeType: 'S' },
+                        { AttributeName: 'post_count', AttributeType: 'N' }
+                    ]);
+                    calledParams.LocalSecondaryIndexes.should.eql([
+                        {
+                            IndexName: 'forums.post_count',
+                            KeySchema:[
+                                { AttributeName: 'id', KeyType: 'HASH' },
+                                { AttributeName: 'post_count', KeyType: 'RANGE' }
+                            ],
+                            Projection: { ProjectionType: 'KEYS_ONLY' }
+                        }
+                    ]);
+                    done();
+                });
+            });
+
+            it('should create a table with string secondary key', function(done){
+                schema = dino.schema({
+                    table: 'forums',
+                    attributes: {
+                        id: dino.types.id,
+                        created_by: dino.types.string,
+                        last_post_by: dino.types.string
+                    },
+                    key: {
+                        hash: 'id',
+                        range: 'created_by',
+                        secondary: 'last_post_by'
+                    }
+                });
+                schema.createTable(function(){
+                    calledParams.AttributeDefinitions.should.eql([
+                        { AttributeName: 'id', AttributeType: 'S' },
+                        { AttributeName: 'created_by', AttributeType: 'S' },
+                        { AttributeName: 'last_post_by', AttributeType: 'S' }
+                    ]);
+                    calledParams.LocalSecondaryIndexes.should.eql([
+                        {
+                            IndexName: 'forums.last_post_by',
+                            KeySchema:[
+                                { AttributeName: 'id', KeyType: 'HASH' },
+                                { AttributeName: 'last_post_by', KeyType: 'RANGE' }
+                            ],
+                            Projection: { ProjectionType: 'KEYS_ONLY' }
+                        }
+                    ]);
+                    done();
+                });
+            });
+
             it('should create a table with specified read/write throughput', function(done){
                 schema.createTable({
                     readUnits: 2,
