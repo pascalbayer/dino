@@ -15,12 +15,10 @@ describe('schema', function(){
             table: 'forums',
             attributes: {
                 name: dino.types.string,
-                misc: dino.types.object,
-                timestamp: dino.types.string
+                misc: dino.types.object
             },
             key: {
-                hash: 'name',
-                range: 'timestamp'
+                hash: 'name'
             }
         });
         replySchema = dino.schema({
@@ -46,7 +44,7 @@ describe('schema', function(){
             schema.should.have.property('hashKeyAttributes');
             schema.hashKeyAttributes.should.eql(['name']);
             schema.should.have.property('hashKey', 'name');
-            schema.should.have.property('rangeKey', 'timestamp');
+            schema.should.have.property('rangeKey', null);
             schema.should.have.property('keyDelimiter', '#');
         });
         
@@ -84,14 +82,104 @@ describe('schema', function(){
                         WriteCapacityUnits: 1
                     },
                     AttributeDefinitions: [
-                        { AttributeName: 'name', AttributeType: 'S' },
-                        { AttributeName: 'timestamp', AttributeType: 'N' } 
+                        { AttributeName: 'name', AttributeType: 'S' }
                     ],
                     KeySchema: [
-                        { AttributeName: 'name', KeyType: 'HASH' },
-                        { AttributeName: 'timestamp', KeyType: 'RANGE' }
+                        { AttributeName: 'name', KeyType: 'HASH' }
                     ]
                 }).should.be.true;
+            });
+
+            it('should create a table with numeric hash key', function(done){
+                schema = dino.schema({
+                    table: 'forums',
+                    attributes: {
+                        numeric_id: dino.types.number
+                    },
+                    key: {
+                        hash: 'numeric_id'
+                    }
+                });
+                schema.createTable(function(){
+                    calledParams.AttributeDefinitions.should.eql([
+                        { AttributeName: 'numeric_id', AttributeType: 'N' }
+                    ]);
+                    calledParams.KeySchema.should.eql([
+                        { AttributeName: 'numeric_id', KeyType: 'HASH' }
+                    ]);
+                    done();
+                });
+            });
+
+            it('should create a table with string hash key', function(done){
+                schema = dino.schema({
+                    table: 'forums',
+                    attributes: {
+                        id: dino.types.id
+                    },
+                    key: {
+                        hash: 'id'
+                    }
+                });
+                schema.createTable(function(){
+                    calledParams.AttributeDefinitions.should.eql([
+                        { AttributeName: 'id', AttributeType: 'S' }
+                    ]);
+                    calledParams.KeySchema.should.eql([
+                        { AttributeName: 'id', KeyType: 'HASH' }
+                    ]);
+                    done();
+                });
+            });
+
+            it('should create a table with numeric range key', function(done){
+                schema = dino.schema({
+                    table: 'forums',
+                    attributes: {
+                        id: dino.types.id,
+                        post_count: dino.types.number
+                    },
+                    key: {
+                        hash: 'id',
+                        range: 'post_count'
+                    }
+                });
+                schema.createTable(function(){
+                    calledParams.AttributeDefinitions.should.eql([
+                        { AttributeName: 'id', AttributeType: 'S' },
+                        { AttributeName: 'post_count', AttributeType: 'N' }
+                    ]);
+                    calledParams.KeySchema.should.eql([
+                        { AttributeName: 'id', KeyType: 'HASH' },
+                        { AttributeName: 'post_count', KeyType: 'RANGE' }
+                    ]);
+                    done();
+                });
+            });
+
+            it('should create a table with string range key', function(done){
+                schema = dino.schema({
+                    table: 'forums',
+                    attributes: {
+                        id: dino.types.id,
+                        created_by: dino.types.string
+                    },
+                    key: {
+                        hash: 'id',
+                        range: 'created_by'
+                    }
+                });
+                schema.createTable(function(){
+                    calledParams.AttributeDefinitions.should.eql([
+                        { AttributeName: 'id', AttributeType: 'S' },
+                        { AttributeName: 'created_by', AttributeType: 'S' }
+                    ]);
+                    calledParams.KeySchema.should.eql([
+                        { AttributeName: 'id', KeyType: 'HASH' },
+                        { AttributeName: 'created_by', KeyType: 'RANGE' }
+                    ]);
+                    done();
+                });
             });
 
             it('should create a table with specified read/write throughput', function(done){
