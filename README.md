@@ -1,6 +1,6 @@
 # Dino
 
-A simple [Amazon DynamoDB](http://aws.amazon.com/dynamodb/) object modeler for Node.js. Dino's [small API](#api) leverages the fast and inexpensive parts of the DynamoDB API, while exposing the complete [DynamoDB client](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB_20120810.html) for extensibility.
+A simple [Amazon DynamoDB](http://aws.amazon.com/dynamodb/) object modeler for Node.js. Dino's [small API](#api) leverages the fast and inexpensive parts of the DynamoDB API, while exposing the complete [DynamoDB client](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB_20120810.html) for [extensibility](#extensibility).
 
 [![Build Status](https://secure.travis-ci.org/christophercliff/dino.png?branch=master)](https://travis-ci.org/christophercliff/dino)
 
@@ -305,7 +305,7 @@ replies.models;
 
 Models can be extended to create custom functionality.
 
-```
+```js
 _.extend(User, {
     findOrCreate: function (id, callback) {
         var self = this;
@@ -327,7 +327,7 @@ _.extend(User, {
 
 Both Model and instance methods have access to the complete DynamoDB client via `this.connection.client`.
 
-```
+```js
 _.extend(User, {
     findAll: function (callback) {
         var self = this;
