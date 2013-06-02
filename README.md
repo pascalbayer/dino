@@ -301,6 +301,46 @@ The raw array of models in the collection.
 replies.models;
 ```
 
+## Extensibility
+
+Models can be extended to create custom functionality.
+
+```
+_.extend(User, {
+    findOrCreate: function (id, callback) {
+        var self = this;
+        self.findOne({
+            id: id
+        }, function(err, user){
+            if (user) return callback(null, user);
+            user = self.create({
+                id: id
+            });
+            user.save(function(err){
+                if (err) return callback(err);
+                return callback(null, user);
+            });
+        });
+    }
+})
+```
+
+Both Model and instance methods have access to the complete DynamoDB client via `this.connection.client`.
+
+```
+_.extend(User, {
+    findAll: function (callback) {
+        var self = this;
+        self.connection.client.scan({
+            TableName: self.schema.table
+        }, function(err, data){
+            if (err) return callback(err);
+            callback(null, dino.collection(_.map(data.Items, self.parse, self)), data.ScannedCount);
+        });
+    }
+})
+```
+
 ## Tests
 
 Install the dependencies and run.
