@@ -42,5 +42,22 @@ describe('connection', function(){
         client.config.credentials.accessKeyId.should.equal('AAA');
         
     });
-    
+
+    it('should pass through the extra options', function() {
+
+        var url = 'http://localhost:8000/',
+            client;
+
+        client = dino.connection.create({
+            endpoint: url,
+        });
+
+        client.endpoint.href.should.equal(url);
+
+        client = dino.connection.create({
+            region: 'woof'
+        });
+
+        client.endpoint.href.should.equal('https://dynamodb.woof.amazonaws.com/');
+    });
 });
