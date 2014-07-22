@@ -329,7 +329,28 @@ describe('schema', function(){
         });
         
     });
-    
+
+    describe('deleteTable', function(){
+
+        afterEach(function(){
+            dino.connection.client.deleteTable.restore();
+        });
+
+        it('should delete the current table', function(done){
+          var stub = sinon.stub(dino.connection.client, 'deleteTable', function(params, callback) {
+                  params.should.have.property('TableName', 'forums');
+                  callback(null);
+              });
+
+
+          schema.deleteTable(function(err) {
+              done(err);
+          });
+
+        });
+
+    });
+
     describe('add', function(){
         
         it('should add an attribute', function(){
