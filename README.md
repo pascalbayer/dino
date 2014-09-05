@@ -48,7 +48,8 @@ $ npm install dino
 - [`connection.client`](#connectionclient)
 - [`connection.create()`](#connectioncreateoptions)
 - [`schema()`](#schemaoptions)
-- [`schema.createTable()`](#schemacreatetableoptions)
+- [`schema.createTable()`](#schemacreatetableoptions-callback)
+- [`schema.deleteTable()`](#schemadeletetablecallback)
 - [`type()`](#typeoptions)
 - [`model()`](#modeloptions)
 - [`Model.create()`](#modelcreateattributes)
@@ -139,7 +140,7 @@ var forumSchema = dino.schema({
 - `object`
 - `string`
 
-### schema.createTable(options);
+### schema.createTable(options[, callback]);
 
 Creates a table in DynamoDB.
 
@@ -155,6 +156,14 @@ forumSchema.createTable({
 - `client`
 - `readUnits`
 - `writeUnits`
+
+### schema.deleteTable([callback]);
+
+Deletes a table from DynamoDB.
+
+```js
+forumSchema.deleteTable(function(err) { });
+```
 
 ### type(options)
 
