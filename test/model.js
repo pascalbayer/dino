@@ -1,4 +1,5 @@
 var should = require('should'),
+    sinon = require('sinon'),
     moment = require('moment'),
     dino = require('../');
 
@@ -42,8 +43,32 @@ describe('model', function(){
     describe('Model', function(){
         
         describe('findOne', function(){
-            
-            
+
+            it('should send an error if getItem returns no item', function() {
+                var stub = sinon.stub(dino.connection.client, 'getItem', function(params, cb) {
+                    cb(null, {});
+                });
+
+                Forum.findOne({name: 'AmazonDynamoDB'}, function(err, forum) {
+                    err.should.be.instanceof(Error);
+                    err.message.should.equal('Item does not exist');
+                });
+
+                stub.restore();
+            });
+
+            it('should send the error from AWS rather than the default error', function() {
+                var stub = sinon.stub(dino.connection.client, 'getItem', function(params, cb) {
+                    cb(new Error('cake tins'), {});
+                });
+
+                Forum.findOne({name: 'AmazonDynamoDB'}, function(err, forum) {
+                    err.should.be.instanceof(Error);
+                    err.message.should.equal('cake tins');
+                });
+
+                stub.restore();
+            });
             
         });
         
