@@ -17,13 +17,13 @@
     "test": "./node_modules/mocha/bin/mocha"
   },
   "dependencies": {
-    "node-uuid": "1.4.0",
+    "aws-sdk": "^2.x",
+    "lodash": "^3.9.3",
     "moment": "1.7.2",
-    "underscore": "1.4.3",
-    "aws-sdk": "1.0.0"
+    "node-uuid": "1.4.0"
   },
   "devDependencies": {
-    "mocha": "1.7.4",
+    "mocha": "^2.2.5",
     "should": "1.2.1",
     "sinon": "~1.7.2"
   },

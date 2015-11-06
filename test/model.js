@@ -38,6 +38,9 @@ describe('model', function(){
             last_post_author: 'Chris',
             last_post_date: moment(now)
         });
+        forum.getCategory = function () {
+            return this.category;
+        };
     });
     
     describe('Model', function(){
@@ -249,6 +252,11 @@ describe('model', function(){
                 last_post_date: now.format()
             });
         });
+
+        it('should ignore functions when converting to JSON', function(){
+            forum.should.have.property('getCategory');
+            forum.toJSON().should.not.have.property('getCategory');
+        });
         
     });
     
@@ -264,6 +272,11 @@ describe('model', function(){
                 last_post_author: { S: forum.get('last_post_author') },
                 last_post_date: { S: moment(now).format() }
             });
+        });
+
+        it('should ignore functions when serializing into DynamoDB format', function(){
+            forum.should.have.property('getCategory');
+            forum.serialize().should.not.have.property('getCategory');
         });
         
         it('should omit null and empty values', function(){
