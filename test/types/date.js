@@ -37,6 +37,13 @@ describe('date', function(){
             var m = moment.utc();
             type.serialize(m).should.equal(m.format());
         });
+
+        it('transforms native Date values', function() {
+            var d = new Date();
+            var m = moment(d);
+
+            type.serialize(d).should.eql(m.format());
+        });
     });
     
     describe('transform', function(){
@@ -52,6 +59,13 @@ describe('date', function(){
         it('converts moment to json', function(){
             var m = moment.utc();
             type.toJSON(m).should.equal(m.format());
+        });
+
+        it('transforms native Date values to json', function() {
+            var d = new Date();
+            var m = moment(d);
+
+            type.toJSON(d).should.eql(m.format());
         });
     });
 });
