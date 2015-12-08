@@ -25,7 +25,7 @@ describe('date', function(){
     
     describe('parse', function(){
         it('parses', function(){
-            var s = '2013-03-18T19:26:08+00:00'
+            var s = '2013-03-18T19:26:08+00:00';
             type.deserializeObject({ S: s }).format().should.equal(s);
             type.deserializeObject({ SS: [s, s] }).should.have.length(2);
             type.deserializeObject({ SS: [s, s] })[0].format().should.equal(s);
@@ -36,6 +36,13 @@ describe('date', function(){
         it('transforms the value', function(){
             var m = moment.utc();
             type.serialize(m).should.equal(m.format());
+        });
+
+        it('transforms native Date values', function() {
+            var d = new Date();
+            var m = moment(d);
+
+            type.serialize(d).should.eql(m.format());
         });
     });
     
@@ -52,6 +59,13 @@ describe('date', function(){
         it('converts moment to json', function(){
             var m = moment.utc();
             type.toJSON(m).should.equal(m.format());
+        });
+
+        it('transforms native Date values to json', function() {
+            var d = new Date();
+            var m = moment(d);
+
+            type.toJSON(d).should.eql(m.format());
         });
     });
 });
