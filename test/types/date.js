@@ -25,7 +25,7 @@ describe('date', function(){
     
     describe('parse', function(){
         it('parses', function(){
-            var s = '2013-03-18T19:26:08+00:00'
+            var s = '2013-03-18T19:26:08+00:00';
             type.deserializeObject({ S: s }).format().should.equal(s);
             type.deserializeObject({ SS: [s, s] }).should.have.length(2);
             type.deserializeObject({ SS: [s, s] })[0].format().should.equal(s);
