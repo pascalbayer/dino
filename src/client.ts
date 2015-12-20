@@ -1,4 +1,4 @@
-/// <reference path="../typings/aws-sdk/aws-sdk.d.ts"/>
+/// <reference path="../typings/tsd.d.ts"/>
 
 import { IClientConfig } from './interfaces/iclient';
 

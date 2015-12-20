@@ -1,3 +1,5 @@
+/// <reference path="../typings/tsd.d.ts"/>
+
 import * as Dino from './index';
 
 let client = new Dino.Client({

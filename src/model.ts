@@ -1,4 +1,4 @@
-/// <reference path="../typings/joi/joi.d.ts"/>
+/// <reference path="../typings/tsd.d.ts"/>
 
 import { Schema } from './schema';
 import { Client } from './client';

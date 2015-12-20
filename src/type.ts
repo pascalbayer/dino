@@ -1,4 +1,4 @@
-/// <reference path="../typings/joi/joi.d.ts"/>
+/// <reference path="../typings/tsd.d.ts"/>
 
 import { StringSchema, ObjectSchema, ArraySchema, NumberSchema } from 'joi';
 
