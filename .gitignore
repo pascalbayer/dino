@@ -4,3 +4,4 @@ aws-config.json
 typings/
 src/**/*.js
 src/**/*.js.map
+gulpfile.js.map

@@ -18,11 +18,15 @@
   },
   "dependencies": {
     "aws-sdk": "^2.x",
+    "joi": "^7.0.1",
     "lodash": "^3.9.3",
     "moment": "1.7.2",
-    "node-uuid": "1.4.0"
+    "node-uuid": "1.4.0",
+    "uuid": "^2.0.1"
   },
   "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-tsc": "^1.1.4",
     "mocha": "^2.2.5",
     "should": "1.2.1",
     "sinon": "~1.7.2"
