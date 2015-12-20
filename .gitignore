@@ -5,4 +5,3 @@ typings/
 src/**/*.js
 src/**/*.js.map
 gulpfile.js.map
-gulpfile.js
