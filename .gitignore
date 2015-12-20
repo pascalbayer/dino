@@ -1,4 +1,6 @@
-/node_modules/
+node_modules/
 aws-config.json
-/examples/basic/node_modules/
 .idea/
+typings/
+src/**/*.js
+src/**/*.js.map
