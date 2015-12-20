@@ -1,3 +1,5 @@
+/// <reference path="typings/tsd.d.ts"/>
+
 import * as gulp from 'gulp';
 import * as tsc from 'gulp-tsc';
 
