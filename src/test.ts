@@ -8,7 +8,7 @@ let client = new Dino.Client({
     region: 'eu-central-1'
 });
 
-let event = new Dino.Schema({
+let eventSchema = new Dino.Schema({
     name: 'Event',
     attributes: {
         id: Dino.Type.Guid,
@@ -19,7 +19,7 @@ let event = new Dino.Schema({
     }
 });
 
-event = new Dino.Model(event);
+let event = new Dino.Model(eventSchema);
 
 event.create({
     name: 'Test'

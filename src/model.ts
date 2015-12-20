@@ -18,7 +18,7 @@ export class Model {
         this.client = client || Dino.getClient();
     }
 
-    public create (data : { [id : string] : any; }) : this {
+    public create (data : { [id : string] : any; }) : Model {
         for (let key in this.schema.getSchema()) {
             if (!data[key]) {
                 data[key] = Uuid.v4();
@@ -37,7 +37,7 @@ export class Model {
         return this;
     }
 
-    public save (callback : Function) : this {
+    public save (callback : Function) : Model {
         Dino.getClient().put({
             TableName: this.schema.getName(),
             Item: Object.assign({}, this.data)
