@@ -21,8 +21,7 @@
     "joi": "^7.0.1",
     "lodash": "^3.9.3",
     "moment": "1.7.2",
-    "node-uuid": "1.4.0",
-    "uuid": "^2.0.1"
+    "node-uuid": "1.4.0"
   },
   "devDependencies": {
     "gulp": "^3.9.0",

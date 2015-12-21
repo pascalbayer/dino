@@ -6,7 +6,7 @@ import { Type } from './type';
 import { Dino } from './dino';
 
 import * as Joi from 'joi';
-import * as Uuid from 'uuid';
+import * as Uuid from 'node-uuid';
 
 export class Model {
     private schema : Schema;
