@@ -1,4 +1,4 @@
-/// <reference path="../typings/joi/joi.d.ts"/>
+/// <reference path="../typings/tsd.d.ts"/>
 
 import { ISchema, ISchemaKey } from './interfaces/ischema';
 
@@ -10,11 +10,13 @@ export class Schema {
     private name : string;
     private schema : ISchema;
     private key : ISchemaKey;
+    private attributes: { [id : string] : any; };
 
     constructor (schema : ISchema) {
         this.name = schema.name;
-        this.schema = schema.attributes;
+        this.schema = schema;
         this.key = schema.key;
+        this.attributes = schema.attributes;
     }
 
     getName () : string {
@@ -27,5 +29,9 @@ export class Schema {
 
     getKey () : ISchemaKey {
         return this.key;
+    }
+
+    getAttributes () : { [id : string] : any; } {
+        return this.attributes;
     }
 }

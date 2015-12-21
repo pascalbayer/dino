@@ -1,7 +1,7 @@
 export interface ISchemaKey {
     hash : string;
     range? : string;
-    secondary : string;
+    secondary? : string;
 }
 
 export interface ISchema {
