@@ -1,6 +1,6 @@
 /// <reference path="../typings/tsd.d.ts"/>
 
-import { StringSchema, ObjectSchema, ArraySchema, NumberSchema } from 'joi';
+import { StringSchema, ObjectSchema, ArraySchema, NumberSchema, BooleanSchema, DateSchema } from 'joi';
 
 import * as Joi from 'joi';
 
@@ -10,6 +10,8 @@ export class Type {
     public static Object = Type.object();
     public static Array = Type.array();
     public static Number = Type.number();
+    public static Boolean = Type.boolean();
+    public static Date = Type.date();
 
     private static string () : StringSchema {
         return Joi.string();
@@ -29,5 +31,13 @@ export class Type {
 
     private static guid () : StringSchema {
         return Joi.string().guid();
+    }
+
+    private static boolean () : BooleanSchema {
+        return Joi.boolean();
+    }
+
+    private static date() : DateSchema {
+        return Joi.date();
     }
 }
