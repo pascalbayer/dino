@@ -1,9 +1,21 @@
 /// <reference path="typings/tsd.d.ts"/>
 var gulp = require('gulp');
-var tsc = require('gulp-tsc');
+var concat = require('gulp-concat');
+var typescript = require('gulp-typescript');
+var info = require('./package.json');
 gulp.task('build', function () {
-    gulp.src('src/**/*.ts')
-        .pipe(tsc())
+    var typescriptConfig = typescript.createProject('tsconfig.json');
+    var typescriptResult = gulp.src('src/**/*.ts')
+        .pipe(typescript(typescriptConfig));
+    return typescriptResult.js.pipe(gulp.dest('lib/'));
+});
+gulp.task('build:declaration', function () {
+    var typescriptResult = gulp.src('src/**/*.ts')
+        .pipe(typescript({
+        module: 'commonjs',
+        declaration: true
+    }));
+    return typescriptResult.dts.pipe(concat(info.name + '.d.ts'))
         .pipe(gulp.dest('lib/'));
 });
 //# sourceMappingURL=gulpfile.js.map
