@@ -42,7 +42,7 @@ export class Model {
     public save (callback : Function) : Model {
         Dino.getClient().put({
             TableName: this.schema.getName(),
-            Item: Object.assign({}, this.data)
+            Item: this.data
         }, function(err, data) {
             typeof callback === 'function' && callback(err, data);
         });
