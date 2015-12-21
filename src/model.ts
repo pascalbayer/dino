@@ -19,13 +19,15 @@ export class Model {
     }
 
     public create (data : { [id : string] : any; }) : Model {
-        for (let key in this.schema.getSchema()) {
-            if (!data[key]) {
+        let attributes = this.schema.getAttributes();
+
+        for (let key in attributes) {
+            if (attributes.hasOwnProperty(key) && !data[key]) {
                 data[key] = Uuid.v4();
             }
         }
 
-        let result = Joi.validate(data, this.schema.getSchema());
+        let result = Joi.validate(data, attributes);
 
         if (!result.error) {
             this.data = data;
