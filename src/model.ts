@@ -27,7 +27,7 @@ export class Model {
             }
         }
 
-        let result = Joi.validate(data, attributes);
+        let result = Joi.validate(Object.assign({}, data), attributes);
 
         if (!result.error) {
             this.data = data;
