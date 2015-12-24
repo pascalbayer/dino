@@ -19,6 +19,10 @@ let eventSchema = new Dino.Schema({
     }
 });
 
+//eventSchema.createTable(null, (err, data) => {
+//    console.log('Error: ' + err, data);
+//});
+
 let event = new Dino.Model(eventSchema);
 
 event.create({

@@ -40,7 +40,7 @@ export class Model {
     }
 
     public save (callback : Function) : Model {
-        Dino.getClient().put({
+        Dino.getDocumentClient().put({
             TableName: this.schema.getName(),
             Item: this.data
         }, function(err, data) {

@@ -9,3 +9,8 @@ export interface ISchema {
     attributes : { [id : string] : any; };
     key : ISchemaKey;
 }
+
+export interface IUnitConfig {
+    readUnits : number;
+    writeUnits : number;
+}
