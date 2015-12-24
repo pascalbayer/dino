@@ -22,7 +22,7 @@ export class Model {
         let attributes = this.schema.getAttributes();
 
         for (let key in attributes) {
-            if (attributes.hasOwnProperty(key) && !data[key]) {
+            if (attributes.hasOwnProperty(key) && !data[key] && (data[key] != null)) {
                 data[key] = Uuid.v4();
             }
         }
