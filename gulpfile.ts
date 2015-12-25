@@ -1,14 +1,12 @@
 /// <reference path="typings/tsd.d.ts"/>
 
-import { Project } from "gulp-typescript";
-
 import * as gulp from 'gulp';
 import * as concat from 'gulp-concat';
 import * as typescript from 'gulp-typescript';
 import * as info from './package.json';
 
 gulp.task('build', () => {
-    let typescriptConfig : Project = typescript.createProject('tsconfig.json');
+    let typescriptConfig : typescript.Project = typescript.createProject('tsconfig.json');
 
     let typescriptResult = gulp.src('src/**/*.ts')
         .pipe(typescript(typescriptConfig));
