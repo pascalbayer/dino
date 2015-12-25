@@ -45,7 +45,7 @@ export class Schema {
                 ReadCapacityUnits: config && config.readUnits || 5,
                 WriteCapacityUnits: config && config.writeUnits || 5
             }
-        }
+        };
 
         for (let key in this.getKey()) {
             schema.KeySchema.push({
@@ -65,7 +65,13 @@ export class Schema {
             }
         }
 
-        Dino.getClient().createTable(schema, function(err, data) {
+        Dino.getClient().createTable(schema, (err, data) => {
+            typeof callback === 'function' && callback(err, data);
+        });
+    }
+
+    public deleteTable (callback : Function = null) : void {
+        Dino.getClient().deleteTable(this.getName(), (err, data) => {
             typeof callback === 'function' && callback(err, data);
         });
     }
