@@ -38,5 +38,8 @@
   },
   "bugs": {
     "url": "https://github.com/christophercliff/dino/issues"
+  },
+  "typescript": {
+    "definition": "lib/dino.d.ts"
   }
 }
