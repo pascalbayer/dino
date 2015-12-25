@@ -71,7 +71,7 @@ export class Schema {
     }
 
     public deleteTable (callback : Function = null) : void {
-        Dino.getClient().deleteTable(this.getName(), (err, data) => {
+        Dino.getClient().deleteTable({ TableName: this.getName() }, (err, data) => {
             typeof callback === 'function' && callback(err, data);
         });
     }
