@@ -3,8 +3,8 @@ import { IClientConfig } from './interfaces/iclient';
 import * as AWS from 'aws-sdk';
 
 export class Dino {
-    private static client : any;
-    private static documentClient : any;
+    private static client : AWS.DynamoDB;
+    private static documentClient : AWS.DynamoDB.DocumentClient;
 
     static setClientConfig (config : IClientConfig) : void {
         this.client = new AWS.DynamoDB({
@@ -20,11 +20,11 @@ export class Dino {
         });
     }
 
-    static getClient () : any {
+    static getClient () : AWS.DynamoDB {
         return this.client;
     }
 
-    static getDocumentClient () : any {
+    static getDocumentClient () : AWS.DynamoDB.DocumentClient {
         return this.documentClient;
     }
 }
