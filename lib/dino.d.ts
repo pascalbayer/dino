@@ -5,10 +5,14 @@ export interface IClientConfig {
     endpoint?: string;
 }
 
+import { IClientConfig } from './interfaces/iclient';
+import * as AWS from 'aws-sdk';
 export declare class Dino {
     private static client;
-    static setClient(client: any): void;
-    static getClient(): any;
+    private static documentClient;
+    static setClientConfig(config: IClientConfig): void;
+    static getClient(): AWS.DynamoDB;
+    static getDocumentClient(): AWS.DynamoDB.DocumentClient;
 }
 
 /// <reference path="../typings/tsd.d.ts" />
@@ -29,14 +33,40 @@ export interface ISchema {
     };
     key: ISchemaKey;
 }
+export interface IUnitConfig {
+    readUnits: number;
+    writeUnits: number;
+}
 
 /// <reference path="../typings/tsd.d.ts" />
-import { ISchema, ISchemaKey } from './interfaces/ischema';
+import { Schema, StringSchema, ObjectSchema, ArraySchema, NumberSchema, BooleanSchema, DateSchema } from 'joi';
+export declare class Type {
+    static Guid: StringSchema;
+    static String: StringSchema;
+    static Object: ObjectSchema;
+    static Array: ArraySchema;
+    static Number: NumberSchema;
+    static Boolean: BooleanSchema;
+    static Date: DateSchema;
+    static getTypeMapping(type: Schema): string;
+    private static string();
+    private static object();
+    private static array();
+    private static number();
+    private static guid();
+    private static boolean();
+    private static date();
+}
+
+/// <reference path="../typings/tsd.d.ts" />
+import { ISchema, ISchemaKey, IUnitConfig } from './interfaces/ischema';
 export declare class Schema {
-    private name;
-    private schema;
-    private key;
-    private attributes;
+    protected name: string;
+    protected schema: ISchema;
+    protected key: ISchemaKey;
+    protected attributes: {
+        [id: string]: any;
+    };
     constructor(schema: ISchema);
     getName(): string;
     getSchema(): ISchema;
@@ -44,21 +74,8 @@ export declare class Schema {
     getAttributes(): {
         [id: string]: any;
     };
-}
-
-/// <reference path="../typings/tsd.d.ts" />
-import { StringSchema, ObjectSchema, ArraySchema, NumberSchema } from 'joi';
-export declare class Type {
-    static Guid: StringSchema;
-    static String: StringSchema;
-    static Object: ObjectSchema;
-    static Array: ArraySchema;
-    static Number: NumberSchema;
-    private static string();
-    private static object();
-    private static array();
-    private static number();
-    private static guid();
+    createTable(config?: IUnitConfig, callback?: Function): void;
+    deleteTable(callback?: Function): void;
 }
 
 /// <reference path="../typings/tsd.d.ts" />
