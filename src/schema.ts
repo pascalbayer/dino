@@ -8,10 +8,10 @@ import { Dino } from './dino';
 import { Type } from './type';
 
 export class Schema {
-    private name : string;
-    private schema : ISchema;
-    private key : ISchemaKey;
-    private attributes: { [id : string] : any; };
+    protected name : string;
+    protected schema : ISchema;
+    protected key : ISchemaKey;
+    protected attributes: { [id : string] : any; };
 
     constructor (schema : ISchema) {
         this.name = schema.name;
